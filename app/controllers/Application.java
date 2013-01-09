@@ -16,10 +16,14 @@ public class Application extends Controller {
         @Required public String name;
         @Required @Min(1) @Max(100) public Integer repeat;
         public String color;
-    } 
+    }
     
-  public static Result index() {
-    return ok(index.render("test"));
-  }
+    public static Result register() {
+    	return ok(register.render());
+    }
+    
+	public static Result index() {
+		return ok(index.render("test"));
+	}
   
 }
