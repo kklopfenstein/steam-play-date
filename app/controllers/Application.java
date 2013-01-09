@@ -18,9 +18,9 @@ public class Application extends Controller {
         public String color;
     }
     
-    public static Result register() {
-    	return ok(register.render());
-    }
+    //public static Result register() {
+    //	return ok(views.html.Application.reg.render());
+    //}
     
 	public static Result index() {
 		return ok(index.render("test"));
