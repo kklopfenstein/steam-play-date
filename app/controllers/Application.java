@@ -42,7 +42,7 @@ public class Application extends Controller {
 	}
 	
 	public static Result login() {
-		Form<LoginForm> form = form(LoginForm.class).bindFromRequest(arg0);
+		Form<LoginForm> form = form(LoginForm.class).bindFromRequest();
 		if(form.hasErrors()) {
 			return badRequest(views.html.login.render("Form was incorrect.", 
 				form(LoginForm.class)));
@@ -50,9 +50,7 @@ public class Application extends Controller {
 		else {
 			LoginForm user = form.get();
 			Ebean.save(user);
-			return ok(
-						views.html.login.render(user.name, user.email)
-					);
+			return redirect("/");
 		}
 	}
   
