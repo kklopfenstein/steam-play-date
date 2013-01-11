@@ -11,19 +11,13 @@ import views.html.index;
 
 public class Application extends Controller {
 	
-	public class LoginForm {
-		@Required
-		public String name;
-		@Required
-		public String passwd;
-	}
-	
     public static Result register() {
     	return ok(views.html.reg.render(null,form(PDUser.class)));
     }
     
 	public static Result index() {
-		return ok(index.render("test"));
+		String user = session("user");
+		return ok(index.render("test", user));
 	}
 	
 	public static Result registerUser() {
@@ -41,17 +35,33 @@ public class Application extends Controller {
 		}
 	}
 	
+	public static Result startLogin() {
+		return ok(views.html.login.render(null,form(LoginUser.class)));
+	}
+	
 	public static Result login() {
-		Form<LoginForm> form = form(LoginForm.class).bindFromRequest();
+		Form<LoginUser> form = form(LoginUser.class).bindFromRequest();
 		if(form.hasErrors()) {
 			return badRequest(views.html.login.render("Form was incorrect.", 
-				form(LoginForm.class)));
+				form(LoginUser.class)));
 		}
 		else {
-			LoginForm user = form.get();
-			Ebean.save(user);
+			LoginUser user = form.get();
+			PDUser pdUser = PDUser.isValidLoginUser(user);
+			if(pdUser != null) {
+				session("user", pdUser.name);
+			}
+			else {
+				return badRequest(views.html.login.render("Invalid username or password.", 
+						form(LoginUser.class)));
+			}
 			return redirect("/");
 		}
+	}
+	
+	public static Result logout() {
+		session().clear();
+		return redirect("/");
 	}
   
 }
