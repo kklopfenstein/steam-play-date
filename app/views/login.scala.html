@@ -1,4 +1,4 @@
-@(message: String)(regForm: Form[Application.LoginForm])
+@(message: String)(loginForm: Form[Application.LoginForm])
 
 @import helper._
 
@@ -17,12 +17,12 @@
 		<h2>@message</h2>
     	@form(action = routes.Application.login, args = 'id  -> "loginForm") {
     		@inputText(
-    			field = regForm("name"),
+    			field = loginForm("name"),
     			args = '_label -> "What's your name?"
     		)
     		
     		@inputPassword(
-    			field = regForm("passwd"),
+    			field = loginForm("passwd"),
     			args = '_label -> "Password"
     		)
     		
