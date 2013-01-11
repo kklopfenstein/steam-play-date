@@ -1,5 +1,6 @@
 package controllers;
 
+import models.PDUser;
 import play.data.Form;
 import play.data.validation.Constraints.Required;
 import play.mvc.Controller;
@@ -8,18 +9,8 @@ import views.html.index;
 
 public class Application extends Controller {
 	
-	/**
-     * Describes the hello form.
-     */
-    public static class User {
-        @Required public String name;
-        @Required public String email;
-        @Required public String passwd;
-        @Required public String passwdCfrm;
-    }
-    
     public static Result register() {
-    	return ok(views.html.reg.render(null,form(User.class)));
+    	return ok(views.html.reg.render(null,form(PDUser.class)));
     }
     
 	public static Result index() {
@@ -27,13 +18,13 @@ public class Application extends Controller {
 	}
 	
 	public static Result registerUser() {
-		Form<User> form = form(User.class).bindFromRequest();
+		Form<PDUser> form = form(PDUser.class).bindFromRequest();
 		if(form.hasErrors()) {
 			return badRequest(views.html.reg.render("Form was incorrect.", 
-				form(User.class)));
+				form(PDUser.class)));
 		}
 		else {
-			User user = form.get();
+			PDUser user = form.get();
 			return ok(
 						views.html.regSuccess.render(user.name, user.email)
 					);

@@ -1,4 +1,4 @@
-@(message: String)(regForm: Form[Application.User])
+@(message: String)(regForm: Form[PDUser])
 
 @import helper._
 
@@ -31,11 +31,6 @@
     			args = '_label -> "Password"
     		)
     		
-    		@inputPassword(
-    			field = regForm("passwdCfrm"),
-    			args = '_label -> "Password (Confirm)"
-    		)
-			
 			<button class="btn btn-large btn-primary" type="Submit">Register</button>
     	}
     	
