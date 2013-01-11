@@ -1,5 +1,7 @@
 package controllers;
 
+import com.avaje.ebean.Ebean;
+
 import models.PDUser;
 import play.data.Form;
 import play.data.validation.Constraints.Required;
@@ -8,6 +10,13 @@ import play.mvc.Result;
 import views.html.index;
 
 public class Application extends Controller {
+	
+	public class LoginForm {
+		@Required
+		public String name;
+		@Required
+		public String passwd;
+	}
 	
     public static Result register() {
     	return ok(views.html.reg.render(null,form(PDUser.class)));
@@ -25,6 +34,22 @@ public class Application extends Controller {
 		}
 		else {
 			PDUser user = form.get();
+			Ebean.save(user);
+			return ok(
+						views.html.regSuccess.render(user.name, user.email)
+					);
+		}
+	}
+	
+	public static Result login() {
+		Form<LoginForm> form = form(LoginForm.class).bindFromRequest(arg0);
+		if(form.hasErrors()) {
+			return badRequest(views.html.reg.render("Form was incorrect.", 
+				form(LoginForm.class)));
+		}
+		else {
+			LoginForm user = form.get();
+			Ebean.save(user);
 			return ok(
 						views.html.regSuccess.render(user.name, user.email)
 					);
