@@ -6,10 +6,8 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 
 import play.data.validation.Constraints;
+import play.data.validation.Constraints.Email;
 import play.db.ebean.Model;
-
-import com.avaje.ebeaninternal.util.DefaultExpressionList;
-
 import controllers.LoginUser;
 
 @Entity
@@ -19,6 +17,7 @@ public class PDUser extends Model {
 	public String name;
 	
 	@Constraints.Required
+	@Email
 	public String email;
 	
 	@Constraints.Required

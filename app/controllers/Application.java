@@ -23,8 +23,9 @@ public class Application extends Controller {
 	public static Result registerUser() {
 		Form<PDUser> form = form(PDUser.class).bindFromRequest();
 		if(form.hasErrors()) {
-			return badRequest(views.html.reg.render("Form was incorrect.", 
-				form(PDUser.class)));
+			return badRequest(views.html.reg.render(
+					"Oops! Something went wrong.", 
+					form));
 		}
 		else {
 			PDUser user = form.get();
@@ -42,8 +43,9 @@ public class Application extends Controller {
 	public static Result login() {
 		Form<LoginUser> form = form(LoginUser.class).bindFromRequest();
 		if(form.hasErrors()) {
-			return badRequest(views.html.login.render("Form was incorrect.", 
-				form(LoginUser.class)));
+			return badRequest(views.html.login.render(
+					"Oops! Something went wrong.", 
+					form));
 		}
 		else {
 			LoginUser user = form.get();
@@ -52,7 +54,8 @@ public class Application extends Controller {
 				session("user", pdUser.name);
 			}
 			else {
-				return badRequest(views.html.login.render("Invalid username or password.", 
+				return badRequest(views.html.login.render(
+						"Invalid username or password.", 
 						form(LoginUser.class)));
 			}
 			return redirect("/");

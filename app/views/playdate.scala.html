@@ -1,0 +1,22 @@
+@(message: String)(playForm: Form[PlayDate])
+
+@import helper._
+
+@main(title="New Play Date") {
+   	<h1>New Play Date</h1>
+	<h2>@message</h2>
+   	@form(action = routes.Application.login, args = 'id  -> "playForm") {
+   		@inputText(
+   			field = playForm("id"),
+   			args = '_label -> "Id?"
+   		)
+   		
+   		@inputDate(
+   			field = playForm("date"),
+   			args = '_label -> "Date"
+   		)
+   		
+		<button class="btn btn-primary" type="Submit">Create</button>
+		<a href="/" class="btn">Back</a>
+   	}
+}

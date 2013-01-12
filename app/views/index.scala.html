@@ -1,13 +1,9 @@
 @(title: String)(user: String)
 
 @main(title="Play with friends") {
-	<form>
-		<fieldset>
-			<legend>Play Date</legend>
-			@if(user == null || (user.isEmpty())) {
-				<button class="btn btn-large btn-primary" type="button" onClick="document.location='startLogin'">Login</button>
-	 			<button class="btn btn-large btn-primary" type="button" onClick="document.location='register'">Register</button>
-	 		}
-		</fieldset>
-	</form>
+	<h1>Play Date</h1>
+	@if(user == null || (user.isEmpty())) {
+		<a href="/startLogin" class="btn btn-large btn-primary">Login</a>
+		<a href="/register" class="btn btn-large btn-primary">Register</a>
+	}
 }
