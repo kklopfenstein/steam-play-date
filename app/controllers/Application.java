@@ -1,13 +1,13 @@
 package controllers;
 
-import com.avaje.ebean.Ebean;
-
 import models.PDUser;
+import models.PlayDate;
 import play.data.Form;
-import play.data.validation.Constraints.Required;
 import play.mvc.Controller;
 import play.mvc.Result;
 import views.html.index;
+
+import com.avaje.ebean.Ebean;
 
 public class Application extends Controller {
 	
@@ -67,4 +67,8 @@ public class Application extends Controller {
 		return redirect("/");
 	}
   
+	
+	public static Result newPlayDate() {
+		return ok(views.html.playdate.render(null,form(PlayDate.class)));
+	}
 }
