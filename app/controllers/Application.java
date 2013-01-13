@@ -11,7 +11,6 @@ import play.data.Form;
 import play.mvc.Controller;
 import play.mvc.Result;
 import playdate.common.steam.parser.SteamComXMLParser;
-import scala.collection.Seq;
 import views.html.index;
 
 import com.avaje.ebean.Ebean;
@@ -24,7 +23,13 @@ public class Application extends Controller {
     
 	public static Result index() {
 		String user = session("user");
-		return ok(index.render("test", user));
+		
+		List<PlayDate> dates = null;
+		if(user != null && (!user.isEmpty())) {
+			dates = PlayDate.getPlayDates(user);
+		}
+		
+		return ok(index.render("test", user, dates));
 	}
 	
 	public static Result registerUser() {
@@ -44,7 +49,8 @@ public class Application extends Controller {
 					Ebean.save(game);
 				}
 			} catch(Exception e) {
-				Logger.error("Error parsing steam profile for user " + user.steamId);
+				Logger.error("Error parsing steam profile for user " 
+						+ user.steamId);
 				Logger.error("Exception was " + e.getMessage());
 				e.printStackTrace();
 			}
@@ -101,4 +107,33 @@ public class Application extends Controller {
 		}
 		return ok(views.html.playdate.render(null,form(PlayDate.class), gm));
 	}
+	
+	public static Result createPlayDate() {
+		
+		String user = session("user");
+		
+		if(user == null || user.isEmpty()) {
+			return redirect("/");
+		}
+		
+		List<SteamGame> games = SteamGame.getGames(user);
+		List<String> gm = new ArrayList<String>();
+		for(SteamGame game : games) {
+			Logger.info("Game found for " + user + ".");
+			gm.add(game.name);
+		}
+		
+		Form<PlayDate> form = form(PlayDate.class).bindFromRequest();
+		if(form.hasErrors()) {
+			return badRequest(views.html.playdate.render(
+					"Oops! Something went wrong.", 
+					form, gm));
+		}
+		else {
+			PlayDate playDate = form.get();
+			Ebean.save(playDate);
+			return redirect("/");
+		}
+	}
+	
 }

@@ -6,7 +6,6 @@ import models.SteamGame;
 
 import org.junit.Test;
 
-import play.Logger;
 import playdate.common.steam.parser.SteamComXMLParser;
 
 public class SteamComXMLParserTest {

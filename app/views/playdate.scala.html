@@ -5,7 +5,7 @@
 @main(title="New Play Date") {
    	<h1>New Play Date</h1>
 	<h2>@message</h2>
-   	@form(action = routes.Application.login, args = 'id  -> "playForm") {
+   	@form(action = routes.Application.createPlayDate, args = 'id  -> "playForm") {
    		@inputDate(
    			field = playForm("date"),
    			args = '_label -> "Date"
