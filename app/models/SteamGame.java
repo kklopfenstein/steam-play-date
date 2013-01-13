@@ -32,7 +32,7 @@ public class SteamGame extends Model {
 	
 	public static List<SteamGame> getGames(String user) {
 		List<SteamGame> games = find.where()
-				.eq("name", user).findList();
+				.eq("user", user).findList();
 		return games;
 	}
 }

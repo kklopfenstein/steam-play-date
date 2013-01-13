@@ -11,6 +11,7 @@ import play.data.Form;
 import play.mvc.Controller;
 import play.mvc.Result;
 import playdate.common.steam.parser.SteamComXMLParser;
+import scala.collection.Seq;
 import views.html.index;
 
 import com.avaje.ebean.Ebean;
@@ -93,6 +94,11 @@ public class Application extends Controller {
 		}
 		
 		List<SteamGame> games = SteamGame.getGames(user);
-		return ok(views.html.playdate.render(null,form(PlayDate.class), games));
+		List<String> gm = new ArrayList<String>();
+		for(SteamGame game : games) {
+			Logger.info("Game found for " + user + ".");
+			gm.add(game.name);
+		}
+		return ok(views.html.playdate.render(null,form(PlayDate.class), gm));
 	}
 }
