@@ -1,12 +1,14 @@
 package models;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
 import play.db.ebean.Model;
-import controllers.LoginUser;
+
+@Entity
 public class SteamGame extends Model {
 	/**
 	 * 
@@ -28,8 +30,8 @@ public class SteamGame extends Model {
 	public static Finder<String, SteamGame> find = new Finder<String, SteamGame>(
 			String.class, SteamGame.class);
 	
-	public static ArrayList<SteamGame> getGames(String user) {
-		ArrayList<SteamGame> games = (ArrayList<SteamGame>) find.where()
+	public static List<SteamGame> getGames(String user) {
+		List<SteamGame> games = find.where()
 				.eq("name", user).findList();
 		return games;
 	}

@@ -1,6 +1,7 @@
 package controllers;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import models.PDUser;
 import models.PlayDate;
@@ -91,7 +92,7 @@ public class Application extends Controller {
 			return redirect("/");
 		}
 		
-		ArrayList<SteamGame> games = SteamGame.getGames(user);
+		List<SteamGame> games = SteamGame.getGames(user);
 		return ok(views.html.playdate.render(null,form(PlayDate.class), games));
 	}
 }
