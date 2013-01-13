@@ -12,6 +12,11 @@ import controllers.LoginUser;
 
 @Entity
 public class PDUser extends Model {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -5604961768770202406L;
+
 	@Id
 	@Constraints.Required
 	public String name;
@@ -22,6 +27,10 @@ public class PDUser extends Model {
 	
 	@Constraints.Required
 	public String passwd;
+	
+	public String steamId;
+	
+	public String steamLongId;
 
 	public static Finder<String, PDUser> find = new Finder<String, PDUser>(
 			String.class, PDUser.class);

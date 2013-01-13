@@ -67,7 +67,6 @@ public class Application extends Controller {
 		return redirect("/");
 	}
   
-	
 	public static Result newPlayDate() {
 		return ok(views.html.playdate.render(null,form(PlayDate.class)));
 	}

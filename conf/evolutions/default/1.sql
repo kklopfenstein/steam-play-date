@@ -7,6 +7,8 @@ create table pduser (
   name                      varchar(255) not null,
   email                     varchar(255),
   passwd                    varchar(255),
+  steam_id                  varchar(255),
+  steam_long_id             varchar(255),
   constraint pk_pduser primary key (name))
 ;
 

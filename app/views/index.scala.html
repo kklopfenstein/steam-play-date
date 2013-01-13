@@ -5,5 +5,7 @@
 	@if(user == null || (user.isEmpty())) {
 		<a href="/startLogin" class="btn btn-large btn-primary">Login</a>
 		<a href="/register" class="btn btn-large btn-primary">Register</a>
+	} else {
+		<a href="/newPlayDate" class="btn btn-large btn-success">Create</a>
 	}
 }

@@ -1,0 +1,1 @@
+$('.timepicker-default').timepicker();
