@@ -1,10 +1,15 @@
 package controllers;
 
+import java.util.ArrayList;
+
 import models.PDUser;
 import models.PlayDate;
+import models.SteamGame;
+import play.Logger;
 import play.data.Form;
 import play.mvc.Controller;
 import play.mvc.Result;
+import playdate.common.steam.parser.SteamComXMLParser;
 import views.html.index;
 
 import com.avaje.ebean.Ebean;
@@ -29,6 +34,18 @@ public class Application extends Controller {
 		}
 		else {
 			PDUser user = form.get();
+			SteamComXMLParser parser = new SteamComXMLParser(user.steamId);
+			try {
+				ArrayList<SteamGame> games = parser.parseGameLibrary();
+				for(SteamGame game : games) {
+					game.user = user.name;
+					Ebean.save(game);
+				}
+			} catch(Exception e) {
+				Logger.error("Error parsing steam profile for user " + user.steamId);
+				Logger.error("Exception was " + e.getMessage());
+				e.printStackTrace();
+			}
 			Ebean.save(user);
 			return ok(
 						views.html.regSuccess.render(user.name, user.email)

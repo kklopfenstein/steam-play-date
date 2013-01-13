@@ -17,4 +17,8 @@ public class SteamGame extends Model {
 	public String user;
 	
 	public String playTime;
+	public Long appId;
+	public String storeLink;
+	public String logo;
+	public String playTwoWeeks;
 }

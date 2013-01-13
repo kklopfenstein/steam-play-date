@@ -28,6 +28,7 @@ public class PDUser extends Model {
 	@Constraints.Required
 	public String passwd;
 	
+	@Constraints.Required
 	public String steamId;
 	
 	public String steamLongId;
