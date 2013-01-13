@@ -41,18 +41,31 @@ public class Application extends Controller {
 		}
 		else {
 			PDUser user = form.get();
+			boolean parseSuccessful = false;
+			int attempts = 0;
 			SteamComXMLParser parser = new SteamComXMLParser(user.steamId);
-			try {
-				ArrayList<SteamGame> games = parser.parseGameLibrary();
-				for(SteamGame game : games) {
-					game.user = user.name;
-					Ebean.save(game);
+			while(!parseSuccessful && attempts < 4) {
+				try {
+					ArrayList<SteamGame> games = parser.parseGameLibrary();
+					for(SteamGame game : games) {
+						game.user = user.name;
+						Ebean.save(game);
+					}
+					parseSuccessful = true;
+				} catch(Exception e) {
+					Logger.error("Error parsing steam profile for user " 
+							+ user.steamId);
+					Logger.error("Exception was " + e.getMessage());
+					e.printStackTrace();
 				}
-			} catch(Exception e) {
-				Logger.error("Error parsing steam profile for user " 
-						+ user.steamId);
-				Logger.error("Exception was " + e.getMessage());
-				e.printStackTrace();
+				attempts++;
+				if(!parseSuccessful) {
+					try {
+						Thread.sleep(1000);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+				}
 			}
 			Ebean.save(user);
 			return ok(
@@ -136,5 +149,16 @@ public class Application extends Controller {
 			return redirect("/");
 		}
 	}
+	
+	public static Result removePlayDate(String date, String time, String game) {
+		String user = session("user");
+		if(user == null || user.isEmpty()) {
+			return redirect("/");
+		}
+		
+		PlayDate.removePlayDate(user, date, time, game);
+
+		return redirect("/");
+ 	}
 	
 }

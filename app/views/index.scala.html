@@ -8,12 +8,18 @@
 				<td>Date</td>
 				<td>Time</td>
 				<td>Game</td>
+				<td>Friends</td>
+				<td></td>
+				<td></td>
 			</tr>
 			@for(pd <- pds) {
 				<tr>
 					<td>@pd.date</td>
 					<td>@pd.time</td>
 					<td>@pd.game</td>
+					<td>None</td>
+					<td><a href="/editPlayDate?date=@pd.date&time=@pd.time&game=@pd.game" class="btn">Edit</a></td>
+					<td><a href="/removePlayDate?date=@pd.date&time=@pd.time&game=@pd.game" class="btn btn-danger">Remove</a></td>
 		  		</tr>
 			} 
 		</table>
