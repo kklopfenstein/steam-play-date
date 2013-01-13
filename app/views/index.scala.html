@@ -3,9 +3,20 @@
 @main(title="Play with friends") {
 	<h1>Play Date</h1>
 	@if(pds != null) {
-		@for(pd <- pds) {
-  			@pd.date
-		} 
+		<table class="table table-striped">
+			<tr>
+				<td>Date</td>
+				<td>Time</td>
+				<td>Game</td>
+			</tr>
+			@for(pd <- pds) {
+				<tr>
+					<td>@pd.date</td>
+					<td>@pd.time</td>
+					<td>@pd.game</td>
+		  		</tr>
+			} 
+		</table>
 	}
 	@if(user == null || (user.isEmpty())) {
 		<a href="/startLogin" class="btn btn-large btn-primary">Login</a>
