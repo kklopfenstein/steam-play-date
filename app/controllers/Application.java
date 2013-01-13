@@ -85,6 +85,13 @@ public class Application extends Controller {
 	}
   
 	public static Result newPlayDate() {
-		return ok(views.html.playdate.render(null,form(PlayDate.class)));
+		String user = session("user");
+		
+		if(user == null || user.isEmpty()) {
+			return redirect("/");
+		}
+		
+		ArrayList<SteamGame> games = SteamGame.getGames(user);
+		return ok(views.html.playdate.render(null,form(PlayDate.class), games));
 	}
 }

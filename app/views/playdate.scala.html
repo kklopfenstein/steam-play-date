@@ -1,4 +1,4 @@
-@(message: String)(playForm: Form[PlayDate])
+@(message: String)(playForm: Form[PlayDate])(games: List[SteamGame])
 
 @import helper._
 
@@ -28,5 +28,12 @@
 		<button class="btn btn-primary" type="Submit">Create</button>
 		<a href="/" class="btn">Back</a>
    	}
+   	
+   	<ul>
+   	@for(game <- games) {
+   		<li>@game.getName()</li>
+   	}
+   	</ul>
+   	
    	<script src="@routes.Assets.at("javascripts/playdate.js")" type="text/javascript"></script>
 }
