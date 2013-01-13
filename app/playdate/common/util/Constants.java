@@ -10,4 +10,7 @@ public class Constants {
 	public static final String STEAM_COM_URL = "http://steamcommunity.com/id/";
 	public static final String STEAM_COM_URL_XML = "/games?tab=all&xml=1&l=e" +
 			"nglish";
+	
+	public static final String ADD = "add";
+	public static final String EDIT = "edit";
 }

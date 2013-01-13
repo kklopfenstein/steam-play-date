@@ -11,6 +11,7 @@ import play.data.Form;
 import play.mvc.Controller;
 import play.mvc.Result;
 import playdate.common.steam.parser.SteamComXMLParser;
+import playdate.common.util.Constants;
 import views.html.index;
 
 import com.avaje.ebean.Ebean;
@@ -118,7 +119,7 @@ public class Application extends Controller {
 			Logger.info("Game found for " + user + ".");
 			gm.add(game.name);
 		}
-		return ok(views.html.playdate.render(null,form(PlayDate.class), gm));
+		return ok(views.html.playdate.render(null,form(PlayDate.class), gm, Constants.ADD));
 	}
 	
 	public static Result createPlayDate() {
@@ -140,7 +141,7 @@ public class Application extends Controller {
 		if(form.hasErrors()) {
 			return badRequest(views.html.playdate.render(
 					"Oops! Something went wrong.", 
-					form, gm));
+					form, gm, Constants.ADD));
 		}
 		else {
 			PlayDate playDate = form.get();
@@ -159,6 +160,28 @@ public class Application extends Controller {
 		PlayDate.removePlayDate(user, date, time, game);
 
 		return redirect("/");
+ 	}
+	
+	public static Result editPlayDate(String date, String time, String game) {
+		String user = session("user");
+		if(user == null || user.isEmpty()) {
+			return redirect("/");
+		}
+		
+		List<SteamGame> games = SteamGame.getGames(user);
+		List<String> gm = new ArrayList<String>();
+		for(SteamGame g : games) {
+			Logger.info("Game found for " + user + ".");
+			gm.add(g.name);
+		}
+		
+		PlayDate playDate = null;
+		List<PlayDate> result = PlayDate.getPlayDates(user, date, time, game);
+		if(result != null && result.size() > 0) {
+			playDate = result.get(0);
+		}
+
+		return ok(views.html.playdate.render(null,form(PlayDate.class), gm, Constants.EDIT));
  	}
 	
 }
