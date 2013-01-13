@@ -13,11 +13,10 @@ create table pduser (
 ;
 
 create table play_date (
-  id                        bigint not null,
-  date                      timestamp,
-  time                      varchar(255),
-  game                      varchar(255),
-  constraint pk_play_date primary key (id))
+  user                      varchar(255) not null,
+  date                      timestamp not null,
+  time                      varchar(255) not null,
+  game                      varchar(255))
 ;
 
 create table steam_game (

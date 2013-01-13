@@ -131,6 +131,7 @@ public class Application extends Controller {
 		}
 		else {
 			PlayDate playDate = form.get();
+			playDate.user = user;
 			Ebean.save(playDate);
 			return redirect("/");
 		}

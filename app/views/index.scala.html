@@ -2,6 +2,11 @@
 
 @main(title="Play with friends") {
 	<h1>Play Date</h1>
+	@if(pds != null) {
+		@for(pd <- pds) {
+  			@pd.date
+		} 
+	}
 	@if(user == null || (user.isEmpty())) {
 		<a href="/startLogin" class="btn btn-large btn-primary">Login</a>
 		<a href="/register" class="btn btn-large btn-primary">Register</a>

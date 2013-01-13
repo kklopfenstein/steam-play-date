@@ -17,7 +17,6 @@ public class PlayDate extends Model {
 	private static final long serialVersionUID = -5532228083167047189L;
 
 	@Id
-	@Constraints.Required
 	public String user;
 	
 	@Id
