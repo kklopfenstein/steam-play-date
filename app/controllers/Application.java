@@ -181,7 +181,7 @@ public class Application extends Controller {
 			playDate = result.get(0);
 		}
 
-		return ok(views.html.playdate.render(null,form(PlayDate.class), gm, Constants.EDIT));
+		return ok(views.html.playdate.render(null,form(PlayDate.class).fill(playDate), gm, Constants.EDIT));
  	}
 	
 	public static Result doEditPlayDate() {
