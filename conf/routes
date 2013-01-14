@@ -11,8 +11,8 @@ GET     /startLogin            		controllers.Application.startLogin()
 GET		/logout						controllers.Application.logout()
 GET		/newPlayDate				controllers.Application.newPlayDate()
 POST	/createPlayDate				controllers.Application.createPlayDate()
-GET		/removePlayDate				controllers.Application.removePlayDate(date: String, time: String, game: String)
-GET		/editPlayDate				controllers.Application.editPlayDate(date: String, time: String, game: String)
+GET		/removePlayDate				controllers.Application.removePlayDate(id: Long)
+GET		/editPlayDate				controllers.Application.editPlayDate(id: Long)
 POST	/doEditPlayDate				controllers.Application.doEditPlayDate()
 
 # Map static resources from the /public folder to the /assets URL path

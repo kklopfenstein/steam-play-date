@@ -18,6 +18,8 @@ public class PDUser extends Model {
 	private static final long serialVersionUID = -5604961768770202406L;
 
 	@Id
+	public Long id;
+	
 	@Constraints.Required
 	public String name;
 	
@@ -40,6 +42,15 @@ public class PDUser extends Model {
 		PDUser result = null;
 		List<PDUser> users = find.where()
 				.eq("name", user.name).eq("passwd", user.passwd).findList();
+		if(users != null && users.size() > 0) {
+			result = users.get(0);
+		}
+		return result;
+	}
+	
+	public static PDUser getUser(String user) {
+		PDUser result = null;
+		List<PDUser> users = find.where().eq("name", user).findList(); 
 		if(users != null && users.size() > 0) {
 			result = users.get(0);
 		}

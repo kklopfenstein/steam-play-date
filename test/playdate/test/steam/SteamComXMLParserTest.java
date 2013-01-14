@@ -14,7 +14,7 @@ public class SteamComXMLParserTest {
 	
 	@Test
 	public void testParser() {
-		try {
+		/*try {
 			SteamComXMLParser parser = new SteamComXMLParser(STEAM_ID);
 			ArrayList<SteamGame> games = parser.parseGameLibrary();
 			for(SteamGame game : games) {
@@ -23,6 +23,6 @@ public class SteamComXMLParserTest {
 		}
 		catch(Exception e) {
 			e.printStackTrace();
-		}
+		}*/
 	}
 }

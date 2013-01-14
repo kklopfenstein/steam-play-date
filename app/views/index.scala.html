@@ -5,6 +5,7 @@
 	@if(pds != null) {
 		<table class="table table-striped">
 			<tr>
+				<td>Id</td>
 				<td>Date</td>
 				<td>Time</td>
 				<td>Game</td>
@@ -14,12 +15,13 @@
 			</tr>
 			@for(pd <- pds) {
 				<tr>
+					<td>@pd.id</td>
 					<td>@pd.date</td>
 					<td>@pd.time</td>
 					<td>@pd.game</td>
 					<td>None</td>
-					<td><a href="/editPlayDate?date=@pd.date&time=@pd.time&game=@pd.game" class="btn">Edit</a></td>
-					<td><a href="/removePlayDate?date=@pd.date&time=@pd.time&game=@pd.game" class="btn btn-danger">Remove</a></td>
+					<td><a href="/editPlayDate?id=@pd.id" class="btn">Edit</a></td>
+					<td><a href="/removePlayDate?id=@pd.id" class="btn btn-danger">Remove</a></td>
 		  		</tr>
 			} 
 		</table>

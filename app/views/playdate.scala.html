@@ -32,6 +32,11 @@
 	   	}
 	} else {
 		@form(action = routes.Application.doEditPlayDate, args = 'id  -> "playForm") {
+		
+			@helper.input(playForm("id")) { (id, name, value, args) =>
+				<input type="hidden" name="@name" id="@id" value="@value" />
+			}
+		
 	   		@inputDate(
 	   			field = playForm("date"),
 	   			args = '_label -> "Date"
@@ -52,7 +57,7 @@
 	   			args = '_label -> "Game"
 	   		)
 	   		
-			<button class="btn btn-primary" type="Submit">Create</button>
+			<button class="btn btn-primary" type="Submit">Update</button>
 			<a href="/" class="btn">Back</a>
 	   	}
 	}

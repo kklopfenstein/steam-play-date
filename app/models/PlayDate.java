@@ -1,16 +1,11 @@
 package models;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
-import play.Logger;
 import play.data.validation.Constraints;
 import play.db.ebean.Model;
 
@@ -21,14 +16,13 @@ public class PlayDate extends Model {
 	 */
 	private static final long serialVersionUID = -5532228083167047189L;
 
-	@Id
+	@Id	public Long id;
+	
 	public String user;
 	
-	@Id
 	@Constraints.Required
 	public Date date;
 	
-	@Id
 	@Constraints.Required
 	public String time;
 	
@@ -44,24 +38,23 @@ public class PlayDate extends Model {
 		return dates;
 	}
 	
-	public static List<PlayDate> getPlayDates(String user, String date, String time, String game) {
+	public static List<PlayDate> getPlayDates(String user, Long id) {
 		List<PlayDate> dates = null;
-		try {
-			DateFormat df = new SimpleDateFormat("EEE MMM dd kk:mm:ss z yyyy", Locale.ENGLISH);
-			Date dt =  df.parse(date);  
+		//try {
+			//DateFormat df = new SimpleDateFormat("EEE MMM dd kk:mm:ss z yyyy", Locale.ENGLISH);
+			//Date dt =  df.parse(date);  
 			
-			dates = find.where()
-					.eq("user", user).eq("date", dt).eq("time", time)
-					.eq("game", game).findList();
-		} catch(ParseException e) {
-			Logger.error("Parse exception in method getPlayDates of PlayDate");
-		}
+			dates = find.where().eq("user", user)
+					.eq("id", id).findList();
+		//} catch(ParseException e) {
+			//Logger.error("Parse exception in method getPlayDates of PlayDate");
+		//}
 		return dates;
 	}
 	
-	public static boolean removePlayDate(String user, String date, String time, String game) {
+	public static boolean removePlayDate(String user, Long id) {
 		boolean result = false;
-		List<PlayDate> dates = getPlayDates(user, date, time, game);
+		List<PlayDate> dates = getPlayDates(user, id);
 		dates.get(0).delete();
 		return result;
 	}

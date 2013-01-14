@@ -10,6 +10,7 @@ import play.Logger;
 import play.data.Form;
 import play.mvc.Controller;
 import play.mvc.Result;
+import playdate.common.steam.parser.SteamComUtils;
 import playdate.common.steam.parser.SteamComXMLParser;
 import playdate.common.util.Constants;
 import views.html.index;
@@ -44,7 +45,7 @@ public class Application extends Controller {
 			PDUser user = form.get();
 			boolean parseSuccessful = false;
 			int attempts = 0;
-			SteamComXMLParser parser = new SteamComXMLParser(user.steamId);
+			/*SteamComXMLParser parser = new SteamComXMLParser(user.steamId);
 			while(!parseSuccessful && attempts < 4) {
 				try {
 					ArrayList<SteamGame> games = parser.parseGameLibrary();
@@ -67,7 +68,7 @@ public class Application extends Controller {
 						e.printStackTrace();
 					}
 				}
-			}
+			}*/
 			Ebean.save(user);
 			return ok(
 						views.html.regSuccess.render(user.name, user.email)
@@ -113,7 +114,8 @@ public class Application extends Controller {
 			return redirect("/");
 		}
 		
-		List<SteamGame> games = SteamGame.getGames(user);
+		//List<SteamGame> games = SteamGame.getGames(user);
+		List<SteamGame> games = SteamComUtils.getSteamGames(user);
 		List<String> gm = new ArrayList<String>();
 		for(SteamGame game : games) {
 			Logger.info("Game found for " + user + ".");
@@ -130,7 +132,7 @@ public class Application extends Controller {
 			return redirect("/");
 		}
 		
-		List<SteamGame> games = SteamGame.getGames(user);
+		List<SteamGame> games = SteamComUtils.getSteamGames(user);
 		List<String> gm = new ArrayList<String>();
 		for(SteamGame game : games) {
 			Logger.info("Game found for " + user + ".");
@@ -151,24 +153,24 @@ public class Application extends Controller {
 		}
 	}
 	
-	public static Result removePlayDate(String date, String time, String game) {
+	public static Result removePlayDate(Long id) {
 		String user = session("user");
 		if(user == null || user.isEmpty()) {
 			return redirect("/");
 		}
 		
-		PlayDate.removePlayDate(user, date, time, game);
+		PlayDate.removePlayDate(user, id);
 
 		return redirect("/");
  	}
 	
-	public static Result editPlayDate(String date, String time, String game) {
+	public static Result editPlayDate(Long id) {
 		String user = session("user");
 		if(user == null || user.isEmpty()) {
 			return redirect("/");
 		}
 		
-		List<SteamGame> games = SteamGame.getGames(user);
+		List<SteamGame> games = SteamComUtils.getSteamGames(user);
 		List<String> gm = new ArrayList<String>();
 		for(SteamGame g : games) {
 			Logger.info("Game found for " + user + ".");
@@ -176,7 +178,7 @@ public class Application extends Controller {
 		}
 		
 		PlayDate playDate = null;
-		List<PlayDate> result = PlayDate.getPlayDates(user, date, time, game);
+		List<PlayDate> result = PlayDate.getPlayDates(user, id);
 		if(result != null && result.size() > 0) {
 			playDate = result.get(0);
 		}
@@ -185,8 +187,35 @@ public class Application extends Controller {
  	}
 	
 	public static Result doEditPlayDate() {
+		String user = session("user");
+		if(user == null || user.isEmpty()) {
+			return redirect("/");
+		}
+		
+		List<SteamGame> games = SteamComUtils.getSteamGames(user);
+		List<String> gm = new ArrayList<String>();
+		for(SteamGame g : games) {
+			Logger.info("Game found for " + user + ".");
+			gm.add(g.name);
+		}
+		
 		Form<PlayDate> form = form(PlayDate.class).bindFromRequest();
-		return redirect("/");
+		
+		if(form.hasErrors()) {
+			return badRequest(views.html.playdate.render(
+					"Oops! Something went wrong.", 
+					form, gm, Constants.EDIT));
+		}
+		else {
+			PlayDate pd = form.get();
+			List<PlayDate> pds = PlayDate.getPlayDates(user, pd.id);
+			PlayDate pdUpd = pds.get(0);
+			pdUpd.date = pd.date;
+			pdUpd.game = pd.game;
+			pdUpd.time = pd.time;
+			pdUpd.update();
+			return redirect("/");
+		}
 	}
 	
 }

@@ -33,7 +33,7 @@ public class SteamComXMLParser extends DefaultHandler {
 	private SteamGame steamGame;
 	private String tempVal;
 	
-	public SteamComXMLParser(String steamId) {
+	protected SteamComXMLParser(String steamId) {
 		this.steamId = steamId;
 	}
 	
