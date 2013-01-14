@@ -31,7 +31,7 @@
 			<a href="/" class="btn">Back</a>
 	   	}
 	} else {
-		@form(action = routes.Application.editPlayDate, args = 'id  -> "playForm") {
+		@form(action = routes.Application.doEditPlayDate, args = 'id  -> "playForm") {
 	   		@inputDate(
 	   			field = playForm("date"),
 	   			args = '_label -> "Date"
