@@ -225,7 +225,7 @@ public class Application extends Controller {
 		}
 		
 		List<SteamRecommendation> recoms = SteamComUtils.getRecommendations(user, false);
-		return ok(recom.render(user, recoms));
+		return ok(views.html.recom.render(user, recoms));
 	}
 	
 }
