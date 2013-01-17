@@ -224,7 +224,10 @@ public class Application extends Controller {
 			return redirect("/");
 		}
 		
-		List<SteamRecommendation> recoms = SteamComUtils.getRecommendations(user, false);
+		List<SteamRecommendation> recoms = SteamComUtils.getRecommendationsForUser(user, false, 5);
+		Logger.info("User: " + user);
+		Logger.info(recoms.toString());
+		Logger.info("Number of recommendations: " + recoms.size());
 		return ok(views.html.recom.render(user, recoms));
 	}
 	

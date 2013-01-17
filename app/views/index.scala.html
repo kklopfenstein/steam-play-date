@@ -1,7 +1,7 @@
 @(title: String)(user: String)(pds: List[PlayDate])
 
 @main(title="Play with friends") {
-	<h1>Play Date</h1>
+	<h1>Steam Schedule</h1>
 	@if(pds != null) {
 		<table class="table table-striped">
 			<tr>
@@ -31,5 +31,6 @@
 		<a href="/register" class="btn btn-large btn-primary">Register</a>
 	} else {
 		<a href="/newPlayDate" class="btn btn-large btn-success">Create</a>
+		<a href="/getRecommendations" class="btn btn-large">Recommendations</a>
 	}
 }

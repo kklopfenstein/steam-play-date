@@ -26,7 +26,7 @@ public class SteamComUtils {
 	
 	public static List<SteamGame> getSteamGamesForUser(String user, Boolean profile) {
 		PDUser pdUser = PDUser.getUser(user);
-		return getSteamGames(user, profile);
+		return getSteamGames(pdUser.steamId, profile);
 	}
 	
 	public static List<SteamFriend> getSteamFriends(String steamId, Boolean profile) {
@@ -42,10 +42,15 @@ public class SteamComUtils {
 	
 	public static List<SteamFriend> getSteamFriendsForUser(String user, Boolean profile) {
 		PDUser pdUser = PDUser.getUser(user);
-		return getSteamFriends(user, profile);
+		return getSteamFriends(pdUser.steamId, profile);
 	}
 	
-	public static List<SteamRecommendation> getRecommendations(String user, Boolean profile) {
+	public static List<SteamRecommendation> getRecommendationsForUser(String user, Boolean profile, int records) {
+		PDUser pdUser = PDUser.getUser(user);
+		return getRecommendations(pdUser.steamId, profile, records);
+	}
+	
+	public static List<SteamRecommendation> getRecommendations(String user, Boolean profile, int records) {
 		List<SteamRecommendation> result = null;
 		
 		List<SteamGame> userGames = getSteamGames(user, profile);
@@ -57,11 +62,16 @@ public class SteamComUtils {
 			updateGameMap(gameCount, friendGames, friend);
 		}
 		
-		Collection games = gameCount.values();
-		List gs = new ArrayList(games);
+		Collection<SteamRecommendation> games = gameCount.values();
+		List<SteamRecommendation> gs = new ArrayList<SteamRecommendation>(games);
 		Collections.sort(gs, (Comparator<SteamRecommendation>)new RecomComparator());
 		
-		return gs;
+		result = new ArrayList<SteamRecommendation>();
+		for(int i=0;i<records;i++) {
+			result.add(gs.get(i));
+		}
+		
+		return result;
 	}
 	
 	private static HashMap<String,SteamRecommendation> fillGameCountMap(List<SteamGame> 

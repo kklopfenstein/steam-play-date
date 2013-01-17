@@ -27,7 +27,7 @@ public class SteamComXMLParserTest {
 	@Test
 	public void testRecommendations() {
 		try {
-			List<SteamRecommendation> recoms = SteamComUtils.getRecommendations(STEAM_ID, false);
+			List<SteamRecommendation> recoms = SteamComUtils.getRecommendations(STEAM_ID, false, 10);
 			for(SteamRecommendation recom : recoms) {
 				System.out.println(recom);
 			}
