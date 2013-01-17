@@ -11,7 +11,7 @@ import play.data.Form;
 import play.mvc.Controller;
 import play.mvc.Result;
 import playdate.common.steam.parser.SteamComUtils;
-import playdate.common.steam.parser.SteamComXMLParser;
+import playdate.common.steam.parser.recommendation.SteamRecommendation;
 import playdate.common.util.Constants;
 import views.html.index;
 
@@ -43,8 +43,8 @@ public class Application extends Controller {
 		}
 		else {
 			PDUser user = form.get();
-			boolean parseSuccessful = false;
-			int attempts = 0;
+			//boolean parseSuccessful = false;
+			//int attempts = 0;
 			/*SteamComXMLParser parser = new SteamComXMLParser(user.steamId);
 			while(!parseSuccessful && attempts < 4) {
 				try {
@@ -115,7 +115,7 @@ public class Application extends Controller {
 		}
 		
 		//List<SteamGame> games = SteamGame.getGames(user);
-		List<SteamGame> games = SteamComUtils.getSteamGames(user);
+		List<SteamGame> games = SteamComUtils.getSteamGamesForUser(user, false);
 		List<String> gm = new ArrayList<String>();
 		for(SteamGame game : games) {
 			Logger.info("Game found for " + user + ".");
@@ -132,7 +132,7 @@ public class Application extends Controller {
 			return redirect("/");
 		}
 		
-		List<SteamGame> games = SteamComUtils.getSteamGames(user);
+		List<SteamGame> games = SteamComUtils.getSteamGamesForUser(user, false);
 		List<String> gm = new ArrayList<String>();
 		for(SteamGame game : games) {
 			Logger.info("Game found for " + user + ".");
@@ -170,7 +170,7 @@ public class Application extends Controller {
 			return redirect("/");
 		}
 		
-		List<SteamGame> games = SteamComUtils.getSteamGames(user);
+		List<SteamGame> games = SteamComUtils.getSteamGamesForUser(user, false);
 		List<String> gm = new ArrayList<String>();
 		for(SteamGame g : games) {
 			Logger.info("Game found for " + user + ".");
@@ -192,7 +192,7 @@ public class Application extends Controller {
 			return redirect("/");
 		}
 		
-		List<SteamGame> games = SteamComUtils.getSteamGames(user);
+		List<SteamGame> games = SteamComUtils.getSteamGamesForUser(user, false);
 		List<String> gm = new ArrayList<String>();
 		for(SteamGame g : games) {
 			Logger.info("Game found for " + user + ".");
@@ -216,6 +216,16 @@ public class Application extends Controller {
 			pdUpd.update();
 			return redirect("/");
 		}
+	}
+	
+	public static Result getRecommendations() {
+		String user = session("user");
+		if(user == null || user.isEmpty()) {
+			return redirect("/");
+		}
+		
+		List<SteamRecommendation> recoms = SteamComUtils.getRecommendations(user, false);
+		return ok(recom.render(user, recoms));
 	}
 	
 }

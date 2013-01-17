@@ -1,0 +1,17 @@
+@(user: String)(recoms: List[SteamRecommendation])
+
+@main(title="Recommendations") {
+	<h1>Play Date</h1>
+	@if(recoms != null) {
+		<table class="table table-striped">
+			<tr>
+				<td>Game</td>
+			</tr>
+			@for(recom <- recoms) {
+				<tr>
+					<td>@pd.game.name</td>
+		  		</tr>
+			} 
+		</table>
+	}
+}

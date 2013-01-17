@@ -1,28 +1,40 @@
 package playdate.test.steam;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import models.SteamGame;
 
 import org.junit.Test;
 
-import playdate.common.steam.parser.SteamComXMLParser;
+import playdate.common.steam.parser.SteamComUtils;
+import playdate.common.steam.parser.recommendation.SteamRecommendation;
 
 public class SteamComXMLParserTest {
 	
 	public static final String STEAM_ID = "humbajoe";
 	
 	@Test
-	public void testParser() {
-		/*try {
-			SteamComXMLParser parser = new SteamComXMLParser(STEAM_ID);
-			ArrayList<SteamGame> games = parser.parseGameLibrary();
-			for(SteamGame game : games) {
-				System.out.println("Found game: " + game.name);
-			}
+	public void testGameParser() {
+		try {
+			List<SteamGame> games = SteamComUtils.getSteamGames(STEAM_ID, false);
+			assert(games.size() > 0);
 		}
 		catch(Exception e) {
 			e.printStackTrace();
-		}*/
+		}
+	}
+	
+	@Test
+	public void testRecommendations() {
+		try {
+			List<SteamRecommendation> recoms = SteamComUtils.getRecommendations(STEAM_ID, false);
+			for(SteamRecommendation recom : recoms) {
+				System.out.println(recom);
+			}
+			assert(recoms.size() > 0);
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
 	}
 }

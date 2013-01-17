@@ -35,4 +35,13 @@ public class SteamGame extends Model {
 				.eq("user", user).findList();
 		return games;
 	}
+
+	@Override
+	public String toString() {
+		return "SteamGame [id=" + id + ", name=" + name + ", user=" + user
+				+ ", playTime=" + playTime + ", appId=" + appId
+				+ ", storeLink=" + storeLink + ", logo=" + logo
+				+ ", playTwoWeeks=" + playTwoWeeks + "]";
+	}
+	
 }

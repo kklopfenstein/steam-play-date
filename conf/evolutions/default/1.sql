@@ -22,6 +22,13 @@ create table play_date (
   constraint pk_play_date primary key (id))
 ;
 
+create table steam_friend (
+  id                        bigint not null,
+  user                      varchar(255),
+  friend_steam_id           varchar(255),
+  constraint pk_steam_friend primary key (id))
+;
+
 create table steam_game (
   id                        bigint not null,
   name                      varchar(255),
@@ -38,6 +45,8 @@ create sequence pduser_seq;
 
 create sequence play_date_seq;
 
+create sequence steam_friend_seq;
+
 create sequence steam_game_seq;
 
 
@@ -51,6 +60,8 @@ drop table if exists pduser;
 
 drop table if exists play_date;
 
+drop table if exists steam_friend;
+
 drop table if exists steam_game;
 
 SET REFERENTIAL_INTEGRITY TRUE;
@@ -58,6 +69,8 @@ SET REFERENTIAL_INTEGRITY TRUE;
 drop sequence if exists pduser_seq;
 
 drop sequence if exists play_date_seq;
+
+drop sequence if exists steam_friend_seq;
 
 drop sequence if exists steam_game_seq;
 
