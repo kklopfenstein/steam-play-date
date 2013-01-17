@@ -6,12 +6,12 @@ import java.util.List;
 import models.PDUser;
 import models.PlayDate;
 import models.SteamGame;
+import models.SteamRecommendation;
 import play.Logger;
 import play.data.Form;
 import play.mvc.Controller;
 import play.mvc.Result;
 import playdate.common.steam.parser.SteamComUtils;
-import playdate.common.steam.parser.recommendation.SteamRecommendation;
 import playdate.common.util.Constants;
 import views.html.index;
 

@@ -1,10 +1,8 @@
-package playdate.common.steam.parser.recommendation;
+package models;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import models.SteamFriend;
-import models.SteamGame;
 
 public class SteamRecommendation {
 	private List<SteamFriend> friends;

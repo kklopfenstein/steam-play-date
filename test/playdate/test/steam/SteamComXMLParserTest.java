@@ -3,11 +3,11 @@ package playdate.test.steam;
 import java.util.List;
 
 import models.SteamGame;
+import models.SteamRecommendation;
 
 import org.junit.Test;
 
 import playdate.common.steam.parser.SteamComUtils;
-import playdate.common.steam.parser.recommendation.SteamRecommendation;
 
 public class SteamComXMLParserTest {
 	

@@ -2,7 +2,8 @@ package playdate.common.steam.parser;
 
 import java.util.Comparator;
 
-import playdate.common.steam.parser.recommendation.SteamRecommendation;
+import models.SteamRecommendation;
+
 
 public class RecomComparator implements Comparator<SteamRecommendation> {
 

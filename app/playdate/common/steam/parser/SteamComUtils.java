@@ -10,7 +10,7 @@ import java.util.List;
 import models.PDUser;
 import models.SteamFriend;
 import models.SteamGame;
-import playdate.common.steam.parser.recommendation.SteamRecommendation;
+import models.SteamRecommendation;
 
 public class SteamComUtils {
 	public static List<SteamGame> getSteamGames(String steamId, Boolean profile) {
