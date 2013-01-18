@@ -2,7 +2,6 @@ package playdate.common.steam.parser;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 
 import models.SteamFriend;
@@ -44,8 +43,10 @@ public class SteamFriendParser extends SteamComXMLParser {
 			try {
 				XMLReader steamReader = XMLReaderFactory.createXMLReader();
 				steamReader.setContentHandler(this);
-				steamReader.parse(new InputSource(new URL(steamURL.toString())
-					.openStream()));
+				/*steamReader.parse(new InputSource(new URL(steamURL.toString())
+					.openStream()));*/
+				steamReader.parse(new InputSource(SteamCache.getRequestStream(
+						steamURL.toString())));
 				successfull = true;
 			}
 			catch(SAXException e) {

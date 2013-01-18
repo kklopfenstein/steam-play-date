@@ -2,9 +2,8 @@ package playdate.common.steam.parser;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
-import java.util.ArrayList;
 
-import models.SteamGame;
+import models.SteamUser;
 
 import org.xml.sax.Attributes;
 import org.xml.sax.InputSource;
@@ -15,24 +14,21 @@ import org.xml.sax.helpers.XMLReaderFactory;
 import play.Logger;
 import playdate.common.util.Constants;
 
-public class SteamUserGameParser extends SteamComXMLParser {
-	private ArrayList<SteamGame> games = new ArrayList<SteamGame>();
+public class SteamUserParser extends SteamComXMLParser {
 	
 	// steam constants for parsing
-	private static final String GAME = "game";
-	private static final String APP_ID = "appID";
-	private static final String NAME = "name";
-	private static final String LOGO = "logo";
-	private static final String STORE_LINK = "storeLink";
-	private static final String HOURS_LAST_TWO_WEEKS = "hoursLast2Weeks";
-	private static final String HOURS_ON_RECORD = "hoursOnRecord";
+	private static final String STEAM_ID_64 = "steamID64";
+	private static final String STEAM_ID = "steamID";
+	private static final String AVATAR_MEDIUM = "avatarMedium";
+	private static final String PROFILE = "profile";
 	
-	private SteamGame steamGame;
-	protected SteamUserGameParser(String steamId, Boolean profile) {
+	private SteamUser steamUser;
+	
+	protected SteamUserParser(String steamId, Boolean profile) {
 		super(steamId, profile);
 	}
 	
-	public ArrayList<SteamGame> parseGameLibrary() throws Exception {
+	public SteamUser parseSteamFriends() throws Exception {
 		StringBuffer steamURL = new StringBuffer();
 		if(profile) {
 			steamURL.append(Constants.STEAM_PROFILE_COM_URL);
@@ -41,7 +37,8 @@ public class SteamUserGameParser extends SteamComXMLParser {
 			steamURL.append(Constants.STEAM_COM_URL);
 		}
 		steamURL.append(this.steamId);
-		steamURL.append(Constants.STEAM_COM_URL_XML);
+		steamURL.append(Constants.STEAM_COM_USER_XML);
+		
 		boolean successfull = false;
 		while(!successfull) {
 			try {
@@ -65,41 +62,29 @@ public class SteamUserGameParser extends SteamComXMLParser {
 				e.printStackTrace();
 			}
 		}
-		return games;
+		return steamUser;
 	}
 	
 	@Override
 	public void startElement(String uri, String localName, String qName, 
 			Attributes attributes) throws SAXException {
-		if(qName.equalsIgnoreCase(GAME)) {
-			if(steamGame != null) {
-				games.add(steamGame);
-			}
-			steamGame = new SteamGame();
-			Logger.info("New game encountered.");
+		if(qName.equalsIgnoreCase(PROFILE)) {
+			steamUser = new SteamUser();
+			Logger.info("New friend encountered.");
 		}
 	}
 	
 	@Override
 	public void endElement(String uri, String localName,
 			String qName) throws SAXException {
-		if(qName.equalsIgnoreCase(APP_ID)) {
-			steamGame.appId = Long.valueOf(tempVal);
+		if(qName.equalsIgnoreCase(STEAM_ID_64)) {
+			steamUser.steamId64 = tempVal;
 		}
-		else if(qName.equalsIgnoreCase(NAME)) {
-			steamGame.name = tempVal;
+		else if(qName.equalsIgnoreCase(STEAM_ID)) {
+			steamUser.steamId = tempVal;
 		}
-		else if(qName.equalsIgnoreCase(STORE_LINK)) {
-			steamGame.storeLink = tempVal;
-		}
-		else if(qName.equalsIgnoreCase(LOGO)) {
-			steamGame.logo = tempVal;
-		}
-		else if(qName.equalsIgnoreCase(HOURS_LAST_TWO_WEEKS)) {
-			steamGame.playTwoWeeks = tempVal;
-		}
-		else if(qName.equalsIgnoreCase(HOURS_ON_RECORD)) {
-			steamGame.playTime = tempVal;
+		else if(qName.equalsIgnoreCase(AVATAR_MEDIUM)) {
+			steamUser.avatarMedium = tempVal;
 		}
 	}
 }
