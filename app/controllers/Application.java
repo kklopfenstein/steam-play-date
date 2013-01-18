@@ -115,13 +115,15 @@ public class Application extends Controller {
 		}
 		
 		//List<SteamGame> games = SteamGame.getGames(user);
-		List<SteamGame> games = SteamComUtils.getSteamGamesForUser(user, false);
+		List<SteamGame> games = SteamComUtils.getSteamGamesForUser(user, 
+				false);
 		List<String> gm = new ArrayList<String>();
 		for(SteamGame game : games) {
 			Logger.info("Game found for " + user + ".");
 			gm.add(game.name);
 		}
-		return ok(views.html.playdate.render(null,form(PlayDate.class), gm, Constants.ADD));
+		return ok(views.html.playdate.render(null,form(PlayDate.class), gm, 
+				Constants.ADD));
 	}
 	
 	public static Result createPlayDate() {
@@ -132,7 +134,8 @@ public class Application extends Controller {
 			return redirect("/");
 		}
 		
-		List<SteamGame> games = SteamComUtils.getSteamGamesForUser(user, false);
+		List<SteamGame> games = SteamComUtils.getSteamGamesForUser(user, 
+				false);
 		List<String> gm = new ArrayList<String>();
 		for(SteamGame game : games) {
 			Logger.info("Game found for " + user + ".");
@@ -170,7 +173,8 @@ public class Application extends Controller {
 			return redirect("/");
 		}
 		
-		List<SteamGame> games = SteamComUtils.getSteamGamesForUser(user, false);
+		List<SteamGame> games = SteamComUtils.getSteamGamesForUser(user, 
+				false);
 		List<String> gm = new ArrayList<String>();
 		for(SteamGame g : games) {
 			Logger.info("Game found for " + user + ".");
@@ -183,7 +187,8 @@ public class Application extends Controller {
 			playDate = result.get(0);
 		}
 
-		return ok(views.html.playdate.render(null,form(PlayDate.class).fill(playDate), gm, Constants.EDIT));
+		return ok(views.html.playdate.render(null,form(PlayDate.class).
+				fill(playDate), gm, Constants.EDIT));
  	}
 	
 	public static Result doEditPlayDate() {
@@ -192,7 +197,8 @@ public class Application extends Controller {
 			return redirect("/");
 		}
 		
-		List<SteamGame> games = SteamComUtils.getSteamGamesForUser(user, false);
+		List<SteamGame> games = SteamComUtils.getSteamGamesForUser(user, 
+				false);
 		List<String> gm = new ArrayList<String>();
 		for(SteamGame g : games) {
 			Logger.info("Game found for " + user + ".");
@@ -224,7 +230,8 @@ public class Application extends Controller {
 			return redirect("/");
 		}
 		
-		List<SteamRecommendation> recoms = SteamComUtils.getRecommendationsForUser(user, false, 5);
+		List<SteamRecommendation> recoms = SteamComUtils.
+				getRecommendationsForUser(user, false, 5);
 		Logger.info("User: " + user);
 		Logger.info(recoms.toString());
 		Logger.info("Number of recommendations: " + recoms.size());
