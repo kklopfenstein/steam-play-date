@@ -16,4 +16,11 @@ public class SteamUser extends Model {
 	public String steamId;
 	public String steamId64;
 	public String avatarMedium;
+	@Override
+	public String toString() {
+		return "SteamUser [id=" + id + ", steamId=" + steamId + ", steamId64="
+				+ steamId64 + ", avatarMedium=" + avatarMedium + "]";
+	}
+	
+	
 }

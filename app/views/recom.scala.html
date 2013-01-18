@@ -6,10 +6,16 @@
 		<table class="table table-striped">
 			<tr>
 				<td>Game</td>
+				<td>Friends</td>
 			</tr>
 			@for(recom <- recoms) {
 				<tr>
 					<td>@recom.getGame().name</td>
+					<td>
+						@for(friend <- recom.getFriends()) {
+							<img src="@friend.avatarMedium"/>
+						}
+					</td>
 		  		</tr>
 			} 
 		</table>

@@ -69,6 +69,7 @@ public class Application extends Controller {
 					}
 				}
 			}*/
+			//user.passwd = BCrypt.hashpw(user.passwd, BCrypt.gensalt(12));
 			Ebean.save(user);
 			return ok(
 						views.html.regSuccess.render(user.name, user.email)
@@ -90,7 +91,7 @@ public class Application extends Controller {
 		else {
 			LoginUser user = form.get();
 			PDUser pdUser = PDUser.isValidLoginUser(user);
-			if(pdUser != null) {
+			if(pdUser != null ) { //&& BCrypt.checkpw(user.passwd, pdUser.passwd)) {
 				session("user", pdUser.name);
 			}
 			else {

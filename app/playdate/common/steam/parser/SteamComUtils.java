@@ -11,6 +11,7 @@ import models.PDUser;
 import models.SteamFriend;
 import models.SteamGame;
 import models.SteamRecommendation;
+import models.SteamUser;
 
 public class SteamComUtils {
 	public static List<SteamGame> getSteamGames(String steamId, Boolean profile) {
@@ -40,6 +41,17 @@ public class SteamComUtils {
 		return result;
 	}
 	
+	public static SteamUser getSteamUser(String steamId, Boolean profile) {
+		SteamUser result = null;
+		SteamUserParser parser = new SteamUserParser(steamId, profile);
+		try {
+			result = parser.parseSteamFriends();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
+	
 	public static List<SteamFriend> getSteamFriendsForUser(String user, Boolean profile) {
 		PDUser pdUser = PDUser.getUser(user);
 		return getSteamFriends(pdUser.steamId, profile);
@@ -55,10 +67,16 @@ public class SteamComUtils {
 		
 		List<SteamGame> userGames = getSteamGames(user, profile);
 		List<SteamFriend> userFriends = getSteamFriends(user, profile);
-		HashMap<String,SteamRecommendation> gameCount = fillGameCountMap(userGames);
+		List<SteamUser> userUsers = new ArrayList<SteamUser>();
 		
 		for(SteamFriend friend : userFriends) {
-			List<SteamGame> friendGames = getSteamGames(friend.friendSteamId, true);
+			userUsers.add(getSteamUser(friend.friendSteamId, true));
+		}
+		
+		HashMap<String,SteamRecommendation> gameCount = fillGameCountMap(userGames);
+		
+		for(SteamUser friend : userUsers) {
+			List<SteamGame> friendGames = getSteamGames(friend.steamId64, true);
 			updateGameMap(gameCount, friendGames, friend);
 		}
 		
@@ -87,7 +105,7 @@ public class SteamComUtils {
 	private static HashMap<String,SteamRecommendation> updateGameMap(
 			HashMap<String,SteamRecommendation> recommendations, 
 			List<SteamGame> 
-			userGames, SteamFriend friend) {
+			userGames, SteamUser friend) {
 		for(SteamGame g : userGames) {
 			if(recommendations.containsKey(g.name)) {
 				SteamRecommendation r = recommendations.get(g.name);

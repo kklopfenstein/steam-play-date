@@ -9,7 +9,8 @@ object ApplicationBuild extends Build {
 
     val appDependencies = Seq(
       "org.codehaus.httpcache4j" % "httpcache4j-core" % "3.3",
-      "org.codehaus.httpcache4j.resolvers" % "resolvers-httpcomponents-httpclient" % "3.3"
+      "org.codehaus.httpcache4j.resolvers" % "resolvers-httpcomponents-httpclient" % "3.3",
+      "org.mindrot" % "jbcrypt" % "0.3m"
     )
 
     val main = PlayProject(appName, appVersion, appDependencies, mainLang = JAVA).settings(
