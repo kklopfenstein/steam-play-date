@@ -7,6 +7,10 @@ import models.PDUser;
 import models.PlayDate;
 import models.SteamGame;
 import models.SteamRecommendation;
+import models.SteamUser;
+
+import org.mindrot.jbcrypt.BCrypt;
+
 import play.Logger;
 import play.data.Form;
 import play.mvc.Controller;
@@ -43,33 +47,7 @@ public class Application extends Controller {
 		}
 		else {
 			PDUser user = form.get();
-			//boolean parseSuccessful = false;
-			//int attempts = 0;
-			/*SteamComXMLParser parser = new SteamComXMLParser(user.steamId);
-			while(!parseSuccessful && attempts < 4) {
-				try {
-					ArrayList<SteamGame> games = parser.parseGameLibrary();
-					for(SteamGame game : games) {
-						game.user = user.name;
-						Ebean.save(game);
-					}
-					parseSuccessful = true;
-				} catch(Exception e) {
-					Logger.error("Error parsing steam profile for user " 
-							+ user.steamId);
-					Logger.error("Exception was " + e.getMessage());
-					e.printStackTrace();
-				}
-				attempts++;
-				if(!parseSuccessful) {
-					try {
-						Thread.sleep(1000);
-					} catch (InterruptedException e) {
-						e.printStackTrace();
-					}
-				}
-			}*/
-			//user.passwd = BCrypt.hashpw(user.passwd, BCrypt.gensalt(12));
+			user.passwd = BCrypt.hashpw(user.passwd, BCrypt.gensalt(12));
 			Ebean.save(user);
 			return ok(
 						views.html.regSuccess.render(user.name, user.email)
@@ -91,7 +69,7 @@ public class Application extends Controller {
 		else {
 			LoginUser user = form.get();
 			PDUser pdUser = PDUser.isValidLoginUser(user);
-			if(pdUser != null ) { //&& BCrypt.checkpw(user.passwd, pdUser.passwd)) {
+			if(pdUser != null && BCrypt.checkpw(user.passwd, pdUser.passwd)) {
 				session("user", pdUser.name);
 			}
 			else {
@@ -118,13 +96,14 @@ public class Application extends Controller {
 		//List<SteamGame> games = SteamGame.getGames(user);
 		List<SteamGame> games = SteamComUtils.getSteamGamesForUser(user, 
 				false);
+		List<SteamUser> users = SteamComUtils.getSteamUsersForUser(user, false);
 		List<String> gm = new ArrayList<String>();
 		for(SteamGame game : games) {
 			Logger.info("Game found for " + user + ".");
 			gm.add(game.name);
 		}
 		return ok(views.html.playdate.render(null,form(PlayDate.class), gm, 
-				Constants.ADD));
+				Constants.ADD, users));
 	}
 	
 	public static Result createPlayDate() {
@@ -137,6 +116,7 @@ public class Application extends Controller {
 		
 		List<SteamGame> games = SteamComUtils.getSteamGamesForUser(user, 
 				false);
+		List<SteamUser> users = SteamComUtils.getSteamUsersForUser(user, false);
 		List<String> gm = new ArrayList<String>();
 		for(SteamGame game : games) {
 			Logger.info("Game found for " + user + ".");
@@ -147,7 +127,7 @@ public class Application extends Controller {
 		if(form.hasErrors()) {
 			return badRequest(views.html.playdate.render(
 					"Oops! Something went wrong.", 
-					form, gm, Constants.ADD));
+					form, gm, Constants.ADD, users));
 		}
 		else {
 			PlayDate playDate = form.get();
@@ -176,6 +156,7 @@ public class Application extends Controller {
 		
 		List<SteamGame> games = SteamComUtils.getSteamGamesForUser(user, 
 				false);
+		List<SteamUser> users = SteamComUtils.getSteamUsersForUser(user, false);
 		List<String> gm = new ArrayList<String>();
 		for(SteamGame g : games) {
 			Logger.info("Game found for " + user + ".");
@@ -189,7 +170,7 @@ public class Application extends Controller {
 		}
 
 		return ok(views.html.playdate.render(null,form(PlayDate.class).
-				fill(playDate), gm, Constants.EDIT));
+				fill(playDate), gm, Constants.EDIT, users));
  	}
 	
 	public static Result doEditPlayDate() {

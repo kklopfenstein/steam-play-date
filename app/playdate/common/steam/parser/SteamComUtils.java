@@ -57,6 +57,16 @@ public class SteamComUtils {
 		return getSteamFriends(pdUser.steamId, profile);
 	}
 	
+	public static List<SteamUser> getSteamUsersForUser(String user, Boolean profile) {
+		List<SteamFriend> friends = getSteamFriendsForUser(user, profile);
+		List<SteamUser> users = new ArrayList<SteamUser>();
+		for(SteamFriend friend : friends) {
+			SteamUser u = getSteamUser(friend.friendSteamId, true);
+			users.add(u);
+		}
+		return users;
+	}
+	
 	public static List<SteamRecommendation> getRecommendationsForUser(String user, Boolean profile, int records) {
 		PDUser pdUser = PDUser.getUser(user);
 		return getRecommendations(pdUser.steamId, profile, records);

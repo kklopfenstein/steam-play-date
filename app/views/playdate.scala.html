@@ -1,4 +1,4 @@
-@(message: String)(playForm: Form[PlayDate])(games: List[String])(action: String)
+@(message: String)(playForm: Form[PlayDate])(games: List[String])(action: String)(users: List[SteamUser])
 
 @import helper._
 
@@ -56,6 +56,13 @@
 	   			options = options(games),
 	   			args = '_label -> "Game"
 	   		)
+	   		
+	   		<ul>
+		   		@for(user <- users) {
+		   			<li><img src="@user.avatarMedium"/></li>	
+		   		}
+	   		</ul>
+	   		
 	   		
 			<button class="btn btn-primary" type="Submit">Update</button>
 			<a href="/" class="btn">Back</a>
