@@ -181,6 +181,7 @@ public class Application extends Controller {
 		
 		List<SteamGame> games = SteamComUtils.getSteamGamesForUser(user, 
 				false);
+		List<SteamUser> users = SteamComUtils.getSteamUsersForUser(user, false);
 		List<String> gm = new ArrayList<String>();
 		for(SteamGame g : games) {
 			Logger.info("Game found for " + user + ".");
@@ -192,7 +193,7 @@ public class Application extends Controller {
 		if(form.hasErrors()) {
 			return badRequest(views.html.playdate.render(
 					"Oops! Something went wrong.", 
-					form, gm, Constants.EDIT));
+					form, gm, Constants.EDIT, users));
 		}
 		else {
 			PlayDate pd = form.get();

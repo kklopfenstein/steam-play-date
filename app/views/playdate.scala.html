@@ -27,6 +27,12 @@
 	   			args = '_label -> "Game"
 	   		)
 	   		
+	   		<ul>
+		   		@for(user <- users) {
+		   			<li><img src="@user.avatarMedium"/><input type="checkbox" name="friend" value="@user.steamId64"></li>
+		   		}
+	   		</ul>
+	   		
 			<button class="btn btn-primary" type="Submit">Create</button>
 			<a href="/" class="btn">Back</a>
 	   	}
