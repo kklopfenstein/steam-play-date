@@ -6,7 +6,7 @@
    	<h1>New Play Date</h1>
 	<h2>@message</h2>
 	@if(action.equals("add")) {
-	   	@form(action = routes.Application.createPlayDate, args = 'id  -> "playForm") {
+	   	@form(action = routes.PlayDateController.createPlayDate, args = 'id  -> "playForm") {
 	   		@inputDate(
 	   			field = playForm("date"),
 	   			args = '_label -> "Date"
@@ -37,7 +37,7 @@
 			<a href="/" class="btn">Back</a>
 	   	}
 	} else {
-		@form(action = routes.Application.doEditPlayDate, args = 'id  -> "playForm") {
+		@form(action = routes.PlayDateController.doEditPlayDate, args = 'id  -> "playForm") {
 		
 			@helper.input(playForm("id")) { (id, name, value, args) =>
 				<input type="hidden" name="@name" id="@id" value="@value" />

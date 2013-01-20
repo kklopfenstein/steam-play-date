@@ -4,17 +4,17 @@
 
 # Home page
 GET     /                           controllers.Application.index()
-GET     /register                   controllers.Application.register()
-POST    /reguser		            controllers.Application.registerUser()
+GET     /register                   controllers.UserController.register()
+POST    /reguser		            controllers.UserController.registerUser()
 POST    /login		            	controllers.Application.login()
 GET     /startLogin            		controllers.Application.startLogin()
 GET		/logout						controllers.Application.logout()
-GET		/newPlayDate				controllers.Application.newPlayDate()
-POST	/createPlayDate				controllers.Application.createPlayDate()
-GET		/removePlayDate				controllers.Application.removePlayDate(id: Long)
-GET		/editPlayDate				controllers.Application.editPlayDate(id: Long)
-POST	/doEditPlayDate				controllers.Application.doEditPlayDate()
-GET		/getRecommendations			controllers.Application.getRecommendations()
+GET		/newPlayDate				controllers.PlayDateController.newPlayDate()
+POST	/createPlayDate				controllers.PlayDateController.createPlayDate()
+GET		/removePlayDate				controllers.PlayDateController.removePlayDate(id: Long)
+GET		/editPlayDate				controllers.PlayDateController.editPlayDate(id: Long)
+POST	/doEditPlayDate				controllers.PlayDateController.doEditPlayDate()
+GET		/getRecommendations			controllers.PlayDateController.getRecommendations()
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)
