@@ -12,13 +12,8 @@ import playdate.common.steam.parser.SteamComUtils;
 
 public class RecomController extends Controller {
 	
-	public class SteamIdForm {
-		@Constraints.Required
-		public String steamId;
-	}
-	
 	public static Result index() {
-		return ok(views.html.welcome.render());
+		return ok(views.html.welcome.render(null, form(SteamIdForm.class)));
 	}
 	
 	/**
@@ -34,8 +29,8 @@ public class RecomController extends Controller {
 		Form<SteamIdForm> form = form(SteamIdForm.class).bindFromRequest();
 		
 		if(form.hasErrors()) {
-			return badRequest(views.html.index.render(
-					null,null,null));
+			return badRequest(views.html.welcome.render(
+					"Invalid",form));
 		}
 		SteamIdForm steamIdForm = form.get();
 		

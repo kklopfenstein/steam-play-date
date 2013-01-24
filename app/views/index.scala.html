@@ -31,14 +31,6 @@
 	@if(user == null || (user.isEmpty())) {
 		<!-- <a href="/startLogin" class="btn btn-large btn-primary">Login</a> -->
 		<!-- <a href="/register" class="btn btn-large btn-primary">Register</a> -->
-		@form(action = routes.RecomController.getRecommendations, args = 'id  -> "recomForm") {
-			@inputText(
-   				field = recomForm("steamId"),
-   				args = '_label -> "Enter steam ID"
-   			)
-   			
-   			<button class="btn btn-primary" type="Submit">Login</button>
-		}
 	} else {
 		<a href="/newPlayDate" class="btn btn-large btn-success">Create</a>
 		<a href="/getRecommendations" class="btn btn-large">Recommendations</a>
