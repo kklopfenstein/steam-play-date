@@ -14,11 +14,14 @@ import models.SteamRecommendation;
 import models.SteamUser;
 
 public class SteamComUtils {
+	
+	private static int TRIES = 5;
+	
 	public static List<SteamGame> getSteamGames(String steamId, Boolean profile) {
 		List<SteamGame> result = null;
 		SteamUserGameParser parser = new SteamUserGameParser(steamId, profile);
 		try {
-			result = parser.parseGameLibrary();
+			result = parser.parseGameLibrary(TRIES);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -34,7 +37,7 @@ public class SteamComUtils {
 		List<SteamFriend> result = null;
 		SteamFriendParser parser = new SteamFriendParser(steamId, profile);
 		try {
-			result = parser.parseSteamFriends();
+			result = parser.parseSteamFriends(TRIES);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -45,7 +48,7 @@ public class SteamComUtils {
 		SteamUser result = null;
 		SteamUserParser parser = new SteamUserParser(steamId, profile);
 		try {
-			result = parser.parseSteamFriends();
+			result = parser.parseSteamFriends(TRIES);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

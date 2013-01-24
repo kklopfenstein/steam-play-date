@@ -27,7 +27,7 @@ public class SteamFriendParser extends SteamComXMLParser {
 		super(steamId, profile);
 	}
 	
-	public ArrayList<SteamFriend> parseSteamFriends() throws Exception {
+	public ArrayList<SteamFriend> parseSteamFriends(int triesMax) throws Exception {
 		StringBuffer steamURL = new StringBuffer();
 		if(profile) {
 			steamURL.append(Constants.STEAM_PROFILE_COM_URL);
@@ -39,7 +39,8 @@ public class SteamFriendParser extends SteamComXMLParser {
 		steamURL.append(Constants.STEAM_COM_FRIEND_XML);
 		
 		boolean successfull = false;
-		while(!successfull) {
+		int tries = 0;
+		while(!successfull && tries < triesMax) {
 			try {
 				XMLReader steamReader = XMLReaderFactory.createXMLReader();
 				steamReader.setContentHandler(this);
@@ -59,6 +60,8 @@ public class SteamFriendParser extends SteamComXMLParser {
 			}
 			catch(IOException e) {
 				e.printStackTrace();
+			} finally {
+				tries++;
 			}
 		}
 		return friends;

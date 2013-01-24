@@ -32,7 +32,7 @@ public class SteamUserGameParser extends SteamComXMLParser {
 		super(steamId, profile);
 	}
 	
-	public ArrayList<SteamGame> parseGameLibrary() throws Exception {
+	public ArrayList<SteamGame> parseGameLibrary(int triesMax) throws Exception {
 		StringBuffer steamURL = new StringBuffer();
 		if(profile) {
 			steamURL.append(Constants.STEAM_PROFILE_COM_URL);
@@ -43,7 +43,8 @@ public class SteamUserGameParser extends SteamComXMLParser {
 		steamURL.append(this.steamId);
 		steamURL.append(Constants.STEAM_COM_URL_XML);
 		boolean successfull = false;
-		while(!successfull) {
+		int tries = 0;
+		while(!successfull && tries < triesMax) {
 			try {
 				XMLReader steamReader = XMLReaderFactory.createXMLReader();
 				steamReader.setContentHandler(this);
@@ -63,6 +64,8 @@ public class SteamUserGameParser extends SteamComXMLParser {
 			}
 			catch(IOException e) {
 				e.printStackTrace();
+			} finally {
+				tries++;
 			}
 		}
 		return games;
