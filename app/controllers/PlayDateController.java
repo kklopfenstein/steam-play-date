@@ -11,6 +11,7 @@ import play.data.Form;
 import play.mvc.Controller;
 import play.mvc.Result;
 import playdate.common.steam.parser.SteamComUtils;
+import playdate.common.steam.parser.exception.SteamParserException;
 import playdate.common.util.Constants;
 
 import com.avaje.ebean.Ebean;
@@ -34,9 +35,15 @@ public class PlayDateController extends Controller {
 		}
 		
 		//List<SteamGame> games = SteamGame.getGames(user);
-		List<SteamGame> games = SteamComUtils.getSteamGamesForUser(user, 
+		List<SteamGame> games = null;
+		List<SteamUser> users = null;
+		try {
+			games = SteamComUtils.getSteamGamesForUser(user, 
 				false);
-		List<SteamUser> users = SteamComUtils.getSteamUsersForUser(user, false);
+			users = SteamComUtils.getSteamUsersForUser(user, false);
+		} catch(SteamParserException e) {
+			e.printStackTrace();
+		}
 		List<String> gm = new ArrayList<String>();
 		for(SteamGame game : games) {
 			Logger.info("Game found for " + user + ".");
@@ -58,9 +65,16 @@ public class PlayDateController extends Controller {
 			return redirect("/");
 		}
 		
-		List<SteamGame> games = SteamComUtils.getSteamGamesForUser(user, 
-				false);
-		List<SteamUser> users = SteamComUtils.getSteamUsersForUser(user, false);
+		List<SteamGame> games = null;
+		List<SteamUser> users = null;
+		
+		try {
+			games = SteamComUtils.getSteamGamesForUser(user, 
+					false);
+			users = SteamComUtils.getSteamUsersForUser(user, false);
+		} catch(SteamParserException e) {
+			e.printStackTrace();
+		}
 		List<String> gm = new ArrayList<String>();
 		for(SteamGame game : games) {
 			Logger.info("Game found for " + user + ".");
@@ -108,9 +122,15 @@ public class PlayDateController extends Controller {
 			return redirect("/");
 		}
 		
-		List<SteamGame> games = SteamComUtils.getSteamGamesForUser(user, 
-				false);
-		List<SteamUser> users = SteamComUtils.getSteamUsersForUser(user, false);
+		List<SteamGame> games = null;
+		List<SteamUser> users = null;
+		try {
+			games = SteamComUtils.getSteamGamesForUser(user, 
+					false);
+			users = SteamComUtils.getSteamUsersForUser(user, false);
+		} catch(SteamParserException e) {
+			e.printStackTrace();
+		}
 		List<String> gm = new ArrayList<String>();
 		for(SteamGame g : games) {
 			Logger.info("Game found for " + user + ".");
@@ -137,9 +157,15 @@ public class PlayDateController extends Controller {
 			return redirect("/");
 		}
 		
-		List<SteamGame> games = SteamComUtils.getSteamGamesForUser(user, 
-				false);
-		List<SteamUser> users = SteamComUtils.getSteamUsersForUser(user, false);
+		List<SteamGame> games = null;
+		List<SteamUser> users = null;
+		try {
+			games = SteamComUtils.getSteamGamesForUser(user, 
+					false);
+			users = SteamComUtils.getSteamUsersForUser(user, false);
+		} catch(SteamParserException e) {
+			e.printStackTrace();
+		}
 		List<String> gm = new ArrayList<String>();
 		for(SteamGame g : games) {
 			Logger.info("Game found for " + user + ".");

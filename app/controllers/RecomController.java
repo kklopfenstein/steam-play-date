@@ -8,6 +8,7 @@ import play.data.Form;
 import play.mvc.Controller;
 import play.mvc.Result;
 import playdate.common.steam.parser.SteamComUtils;
+import playdate.common.steam.parser.exception.SteamParserException;
 
 public class RecomController extends Controller {
 	
@@ -28,7 +29,12 @@ public class RecomController extends Controller {
 		}
 		SteamIdForm steamIdForm = form.get();
 		
-		List<SteamRecommendation> recoms = SteamComUtils.getRecommendations(steamIdForm.steamId, false, 3);
+		List<SteamRecommendation> recoms = null;
+		try {
+			recoms = SteamComUtils.getRecommendations(steamIdForm.steamId, false, 3);
+		} catch(SteamParserException e) {
+			e.printStackTrace();
+		}
 		//Logger.info("User: " + user);
 		Logger.info(recoms.toString());
 		Logger.info("Number of recommendations: " + recoms.size());

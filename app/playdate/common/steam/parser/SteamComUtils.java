@@ -12,55 +12,62 @@ import models.SteamFriend;
 import models.SteamGame;
 import models.SteamRecommendation;
 import models.SteamUser;
+import playdate.common.steam.parser.exception.SteamParserException;
 
 public class SteamComUtils {
 	
 	private static int TRIES = 5;
 	
-	public static List<SteamGame> getSteamGames(String steamId, Boolean profile) {
+	public static List<SteamGame> getSteamGames(String steamId, Boolean profile) 
+			throws SteamParserException {
 		List<SteamGame> result = null;
 		SteamUserGameParser parser = new SteamUserGameParser(steamId, profile);
 		try {
 			result = parser.parseGameLibrary(TRIES);
 		} catch (Exception e) {
-			e.printStackTrace();
+			throw new SteamParserException(e);
 		}
 		return result;
 	}
 	
-	public static List<SteamGame> getSteamGamesForUser(String user, Boolean profile) {
+	public static List<SteamGame> getSteamGamesForUser(String user, Boolean profile) 
+		throws SteamParserException {
 		PDUser pdUser = PDUser.getUser(user);
 		return getSteamGames(pdUser.steamId, profile);
 	}
 	
-	public static List<SteamFriend> getSteamFriends(String steamId, Boolean profile) {
+	public static List<SteamFriend> getSteamFriends(String steamId, Boolean profile) 
+			throws SteamParserException {
 		List<SteamFriend> result = null;
 		SteamFriendParser parser = new SteamFriendParser(steamId, profile);
 		try {
 			result = parser.parseSteamFriends(TRIES);
 		} catch (Exception e) {
-			e.printStackTrace();
+			throw new SteamParserException(e);
 		}
 		return result;
 	}
 	
-	public static SteamUser getSteamUser(String steamId, Boolean profile) {
+	public static SteamUser getSteamUser(String steamId, Boolean profile) 
+			throws SteamParserException {
 		SteamUser result = null;
 		SteamUserParser parser = new SteamUserParser(steamId, profile);
 		try {
 			result = parser.parseSteamFriends(TRIES);
 		} catch (Exception e) {
-			e.printStackTrace();
+			throw new SteamParserException(e);
 		}
 		return result;
 	}
 	
-	public static List<SteamFriend> getSteamFriendsForUser(String user, Boolean profile) {
+	public static List<SteamFriend> getSteamFriendsForUser(String user, Boolean profile) 
+		throws SteamParserException {
 		PDUser pdUser = PDUser.getUser(user);
 		return getSteamFriends(pdUser.steamId, profile);
 	}
 	
-	public static List<SteamUser> getSteamUsersForUser(String user, Boolean profile) {
+	public static List<SteamUser> getSteamUsersForUser(String user, Boolean profile) 
+			throws SteamParserException {
 		List<SteamFriend> friends = getSteamFriendsForUser(user, profile);
 		List<SteamUser> users = new ArrayList<SteamUser>();
 		for(SteamFriend friend : friends) {
@@ -70,12 +77,14 @@ public class SteamComUtils {
 		return users;
 	}
 	
-	public static List<SteamRecommendation> getRecommendationsForUser(String user, Boolean profile, int records) {
+	public static List<SteamRecommendation> getRecommendationsForUser(String user, Boolean profile, int records) 
+		throws SteamParserException {
 		PDUser pdUser = PDUser.getUser(user);
 		return getRecommendations(pdUser.steamId, profile, records);
 	}
 	
-	public static List<SteamRecommendation> getRecommendations(String user, Boolean profile, int records) {
+	public static List<SteamRecommendation> getRecommendations(String user, Boolean profile, int records) 
+			throws SteamParserException {
 		List<SteamRecommendation> result = null;
 		
 		List<SteamGame> userGames = getSteamGames(user, profile);
