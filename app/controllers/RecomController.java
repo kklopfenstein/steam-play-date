@@ -21,11 +21,6 @@ public class RecomController extends Controller {
 	 * @return
 	 */
 	public static Result getRecommendations() {
-		String user = session("user");
-		if(user == null || user.isEmpty()) {
-			return redirect("/");
-		}
-		
 		Form<SteamIdForm> form = form(SteamIdForm.class).bindFromRequest();
 		
 		if(form.hasErrors()) {
@@ -35,9 +30,9 @@ public class RecomController extends Controller {
 		SteamIdForm steamIdForm = form.get();
 		
 		List<SteamRecommendation> recoms = SteamComUtils.getRecommendations(steamIdForm.steamId, false, 3);
-		Logger.info("User: " + user);
+		//Logger.info("User: " + user);
 		Logger.info(recoms.toString());
 		Logger.info("Number of recommendations: " + recoms.size());
-		return ok(views.html.recom.render(user, recoms));
+		return ok(views.html.recom.render(null, recoms));
 	}
 }
