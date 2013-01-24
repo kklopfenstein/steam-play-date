@@ -167,21 +167,4 @@ public class PlayDateController extends Controller {
 		}
 	}
 	
-	/**
-	 * 
-	 * @return
-	 */
-	public static Result getRecommendations() {
-		String user = session("user");
-		if(user == null || user.isEmpty()) {
-			return redirect("/");
-		}
-		
-		List<SteamRecommendation> recoms = SteamComUtils.
-				getRecommendationsForUser(user, false, 5);
-		Logger.info("User: " + user);
-		Logger.info(recoms.toString());
-		Logger.info("Number of recommendations: " + recoms.size());
-		return ok(views.html.recom.render(user, recoms));
-	}
 }

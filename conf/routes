@@ -3,7 +3,8 @@
 # ~~~~
 
 # Home page
-GET     /                           controllers.Application.index()
+GET     /index                      controllers.Application.index()
+GET     /	                        controllers.RecomController.index()
 GET     /register                   controllers.UserController.register()
 POST    /reguser		            controllers.UserController.registerUser()
 POST    /login		            	controllers.Application.login()
@@ -14,7 +15,7 @@ POST	/createPlayDate				controllers.PlayDateController.createPlayDate()
 GET		/removePlayDate				controllers.PlayDateController.removePlayDate(id: Long)
 GET		/editPlayDate				controllers.PlayDateController.editPlayDate(id: Long)
 POST	/doEditPlayDate				controllers.PlayDateController.doEditPlayDate()
-GET		/getRecommendations			controllers.PlayDateController.getRecommendations()
+POST	/getRecommendations			controllers.RecomController.getRecommendations()
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)

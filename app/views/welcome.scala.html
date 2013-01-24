@@ -1,0 +1,15 @@
+@(recomForm: Form[RecomController.SteamIdForm])
+
+@import helper._
+
+@main(title="Play with friends") {
+	<h1>Steam Schedule</h1>
+	@form(action = routes.RecomController.getRecommendations, args = 'id  -> "recomForm") {
+		@inputText(
+  				field = recomForm("steamId"),
+  				args = '_label -> "Enter steam ID"
+  			)
+  			
+  			<button class="btn btn-primary" type="Submit">Login</button>
+	}
+}
