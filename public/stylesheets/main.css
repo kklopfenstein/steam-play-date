@@ -1,0 +1,35 @@
+.fave_caption{
+text-transform:uppercase;
+letter-spacing:2px;
+text-align:center;
+font-family:'futura-pt',sans-serif;
+font-style:normal;
+font-weight:500;
+font-size:13px;
+position:absolute;
+margin-top:110px;
+margin-left:130px;
+opacity:0.80;
+-ms-filter:'progid:DXImageTransform.Microsoft.Alpha(Opacity=80)';
+filter: alpha(opacity=80);
+}
+
+.label1{
+width:300px;
+padding:9px 20px;
+background-color:#e5d527;
+-webkit-transform:rotate(-3deg);
+-moz-transform:rotate(-3deg);
+-o-transform:rotate(-3deg);
+-ms-transform:rotate(-3deg);
+}
+
+.label2{
+width:250px;
+padding:8px 15px;
+background-color:#fbdfde;
+margin-left:35px;
+opacity:0.85;
+-ms-filter:'progid:DXImageTransform.Microsoft.Alpha(Opacity=85)';
+filter: alpha(opacity=85);
+} 

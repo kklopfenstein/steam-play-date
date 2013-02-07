@@ -28,16 +28,21 @@ public class RecomController extends Controller {
 					"Invalid",form));
 		}
 		SteamIdForm steamIdForm = form.get();
-		
 		List<SteamRecommendation> recoms = null;
 		try {
-			recoms = SteamComUtils.getRecommendations(steamIdForm.steamId, false, 3);
+			recoms = SteamComUtils.getRecommendationsAsynch(
+								steamIdForm.steamId, 
+								SteamComUtils.isProfile(steamIdForm.steamId),
+								3
+							);
 		} catch(SteamParserException e) {
 			e.printStackTrace();
 		}
 		//Logger.info("User: " + user);
-		Logger.info(recoms.toString());
-		Logger.info("Number of recommendations: " + recoms.size());
+		if(recoms != null) {
+			Logger.info(recoms.toString());
+			Logger.info("Number of recommendations: " + recoms.size());
+		}
 		return ok(views.html.recom.render(null, recoms));
 	}
 }

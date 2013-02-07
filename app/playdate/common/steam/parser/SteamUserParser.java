@@ -39,29 +39,42 @@ public class SteamUserParser extends SteamComXMLParser {
 		}
 		steamURL.append(this.steamId);
 		steamURL.append(Constants.STEAM_COM_USER_XML);
-		
+		Logger.info(steamURL.toString());
 		boolean successfull = false;
 		int tries = 0;
 		while(!successfull && tries < triesMax) {
 			try {
 				XMLReader steamReader = XMLReaderFactory.createXMLReader();
 				steamReader.setContentHandler(this);
-				/*steamReader.parse(new InputSource(new URL(steamURL.toString())
-					.openStream()));*/
-				steamReader.parse(new InputSource(SteamCache.getRequestStream(
-						steamURL.toString())));
+				InputSource source = null;
+				if(tries == 0) {
+					source = new InputSource(SteamCache.getRequestStream(
+						steamURL.toString()));
+				}
+				else {
+					source = new InputSource(SteamCache.getRefreshRequestStream(
+							steamURL.toString()));
+				}
+				steamReader.parse(source);
 				successfull = true;
 			}
 			catch(SAXException e) {
-				Logger.error("SAXException in method parseGameLibrary of " +
-						"SteamComXMLParser");
-				e.printStackTrace();
+				Logger.error("SAXException in method parseSteamFriends of " +
+						"SteamUserParser");
+				Logger.info("Steam URL was: " + steamURL.toString());
+				//e.printStackTrace();
 			}
 			catch(MalformedURLException e) {
+				Logger.error("MalformedURLException in method parseSteamFriends of " +
+						"SteamUserParser");
+				Logger.info("Steam URL was: " + steamURL.toString());
 				throw new SteamParserException(e);
 			}
 			catch(IOException e) {
-				e.printStackTrace();
+				Logger.error("SAXException in method parseSteamFriends of " +
+						"SteamUserParser");
+				Logger.info("Steam URL was: " + steamURL.toString());
+				//e.printStackTrace();
 			} finally {
 				tries++;
 			}

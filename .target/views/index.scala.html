@@ -1,0 +1,38 @@
+@(title: String)(user: String)(pds: List[PlayDate])
+
+@import helper._
+
+@main(title="Play with friends") {
+	<h1>Steam Schedule</h1>
+	@if(pds != null) {
+		<table class="table table-striped">
+			<tr>
+				<td>Id</td>
+				<td>Date</td>
+				<td>Time</td>
+				<td>Game</td>
+				<td>Friends</td>
+				<td></td>
+				<td></td>
+			</tr>
+			@for(pd <- pds) {
+				<tr>
+					<td>@pd.id</td>
+					<td>@pd.date</td>
+					<td>@pd.time</td>
+					<td>@pd.game</td>
+					<td>None</td>
+					<td><a href="/editPlayDate?id=@pd.id" class="btn">Edit</a></td>
+					<td><a href="/removePlayDate?id=@pd.id" class="btn btn-danger">Remove</a></td>
+		  		</tr>
+			} 
+		</table>
+	}
+	@if(user == null || (user.isEmpty())) {
+		<!-- <a href="/startLogin" class="btn btn-large btn-primary">Login</a> -->
+		<!-- <a href="/register" class="btn btn-large btn-primary">Register</a> -->
+	} else {
+		<a href="/newPlayDate" class="btn btn-large btn-success">Create</a>
+		<a href="/getRecommendations" class="btn btn-large">Recommendations</a>
+	}
+}

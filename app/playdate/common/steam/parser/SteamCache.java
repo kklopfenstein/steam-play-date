@@ -35,4 +35,17 @@ public class SteamCache {
 		}
 		return response.getPayload().getInputStream();
 	}
+	
+	public static InputStream getRefreshRequestStream(String steamURL) {
+		HTTPRequest request = new HTTPRequest(URI.create(steamURL.toString()));
+		HTTPResponse response = null;
+		try {
+			response = SteamCache.getCache().executeRefresh(request);
+		} finally {
+			if(response != null) {
+				response.consume();
+			}
+		}
+		return response.getPayload().getInputStream();
+	}
 }

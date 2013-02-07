@@ -1,0 +1,22 @@
+@(message: String)(loginForm: Form[LoginUser])
+
+@import helper._
+
+@main(title="Login") {
+   	<h1>Login</h1>
+	<h2>@message</h2>
+   	@form(action = routes.Application.login, args = 'id  -> "loginForm") {
+   		@inputText(
+   			field = loginForm("name"),
+   			args = '_label -> "What's your name?"
+   		)
+   		
+   		@inputPassword(
+   			field = loginForm("passwd"),
+   			args = '_label -> "Password"
+   		)
+   		
+		<button class="btn btn-primary" type="Submit">Login</button>
+		<a href="/" class="btn">Back</a>
+   	}
+}

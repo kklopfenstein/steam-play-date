@@ -1,0 +1,34 @@
+@(message: String)(regForm: Form[PDUser])
+
+@import helper._
+
+@main(title="Register") {
+   	<h1>Register</h1>
+	<h2>@message</h2>
+   	@form(action = routes.UserController.registerUser, args = 'id  -> "regForm") {
+   		@inputText(
+   			field = regForm("name"),
+   			args = '_label -> "What's your name?"
+   		)
+   		
+   		@inputText(
+   			field = regForm("email"),
+   			args = '_label -> "Email"
+   		)
+   		
+   		@inputPassword(
+   			field = regForm("passwd"),
+   			args = '_label -> "Password"
+   		)
+   		
+   		@inputText(
+   			field = regForm("steamId"),
+   			args = '_label -> "Steam ID"
+   		)
+   		
+		<button class="btn btn-primary" type="Submit">Register</button>
+		<a href="/" class="btn">Back</a>
+   	}
+   	
+   	
+}
