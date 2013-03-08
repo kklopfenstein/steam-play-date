@@ -14,6 +14,7 @@ import org.xml.sax.helpers.XMLReaderFactory;
 
 import play.Logger;
 import playdate.common.steam.parser.exception.SteamParserException;
+import playdate.common.steam.parser.validation.ValidationResults;
 import playdate.common.util.Constants;
 
 public class SteamUserGameParser extends SteamComXMLParser {
@@ -33,7 +34,7 @@ public class SteamUserGameParser extends SteamComXMLParser {
 		super(steamId, profile);
 	}
 	
-	public ArrayList<SteamGame> parseGameLibrary(int triesMax) throws SteamParserException {
+	public ArrayList<SteamGame> parseGameLibrary(int triesMax, ValidationResults results) throws SteamParserException {
 		StringBuffer steamURL = new StringBuffer();
 		if(profile) {
 			steamURL.append(Constants.STEAM_PROFILE_COM_URL);
@@ -85,6 +86,7 @@ public class SteamUserGameParser extends SteamComXMLParser {
 		}
 		
 		if(!successfull) {
+			results.addMessage("Could not parse games for " + steamId);
 			throw new SteamParserException("Exception after " + tries + " tries.");
 		}
 		

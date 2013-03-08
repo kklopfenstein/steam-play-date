@@ -12,6 +12,7 @@ import play.mvc.Controller;
 import play.mvc.Result;
 import playdate.common.steam.parser.SteamComUtils;
 import playdate.common.steam.parser.exception.SteamParserException;
+import playdate.common.steam.parser.validation.ValidationResults;
 import playdate.common.util.Constants;
 
 import com.avaje.ebean.Ebean;
@@ -37,10 +38,11 @@ public class PlayDateController extends Controller {
 		//List<SteamGame> games = SteamGame.getGames(user);
 		List<SteamGame> games = null;
 		List<SteamUser> users = null;
+		ValidationResults results = new ValidationResults();
 		try {
 			games = SteamComUtils.getSteamGamesForUser(user, 
-				false);
-			users = SteamComUtils.getSteamUsersForUser(user, false);
+				false, results);
+			users = SteamComUtils.getSteamUsersForUser(user, false, results);
 		} catch(SteamParserException e) {
 			e.printStackTrace();
 		}
@@ -67,11 +69,11 @@ public class PlayDateController extends Controller {
 		
 		List<SteamGame> games = null;
 		List<SteamUser> users = null;
-		
+		ValidationResults results = new ValidationResults();
 		try {
 			games = SteamComUtils.getSteamGamesForUser(user, 
-					false);
-			users = SteamComUtils.getSteamUsersForUser(user, false);
+					false, results);
+			users = SteamComUtils.getSteamUsersForUser(user, false, results);
 		} catch(SteamParserException e) {
 			e.printStackTrace();
 		}
@@ -124,10 +126,11 @@ public class PlayDateController extends Controller {
 		
 		List<SteamGame> games = null;
 		List<SteamUser> users = null;
+		ValidationResults results = new ValidationResults();
 		try {
 			games = SteamComUtils.getSteamGamesForUser(user, 
-					false);
-			users = SteamComUtils.getSteamUsersForUser(user, false);
+					false, results);
+			users = SteamComUtils.getSteamUsersForUser(user, false, results);
 		} catch(SteamParserException e) {
 			e.printStackTrace();
 		}
@@ -159,10 +162,11 @@ public class PlayDateController extends Controller {
 		
 		List<SteamGame> games = null;
 		List<SteamUser> users = null;
+		ValidationResults results = new ValidationResults();
 		try {
 			games = SteamComUtils.getSteamGamesForUser(user, 
-					false);
-			users = SteamComUtils.getSteamUsersForUser(user, false);
+					false, results);
+			users = SteamComUtils.getSteamUsersForUser(user, false, results);
 		} catch(SteamParserException e) {
 			e.printStackTrace();
 		}

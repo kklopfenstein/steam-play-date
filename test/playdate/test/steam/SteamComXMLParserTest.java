@@ -8,6 +8,7 @@ import models.SteamRecommendation;
 import org.junit.Test;
 
 import playdate.common.steam.parser.SteamComUtils;
+import playdate.common.steam.parser.validation.ValidationResults;
 
 public class SteamComXMLParserTest {
 	
@@ -16,7 +17,8 @@ public class SteamComXMLParserTest {
 	@Test
 	public void testGameParser() {
 		try {
-			List<SteamGame> games = SteamComUtils.getSteamGames(STEAM_ID, false);
+			ValidationResults results = new ValidationResults();
+			List<SteamGame> games = SteamComUtils.getSteamGames(STEAM_ID, false, results);
 			assert(games.size() > 0);
 		}
 		catch(Exception e) {
@@ -27,7 +29,8 @@ public class SteamComXMLParserTest {
 	@Test
 	public void xtestRecommendations() {
 		try {
-			List<SteamRecommendation> recoms = SteamComUtils.getRecommendations(STEAM_ID, false, 10);
+			ValidationResults results = new ValidationResults();
+			List<SteamRecommendation> recoms = SteamComUtils.getRecommendations(STEAM_ID, false, 10, results);
 			for(SteamRecommendation recom : recoms) {
 				System.out.println(recom);
 			}
@@ -41,7 +44,8 @@ public class SteamComXMLParserTest {
 	@Test
 	public void testRecommendations() {
 		try {
-			List<SteamRecommendation> recoms = SteamComUtils.getRecommendationsAsynch(STEAM_ID, false, 10);
+			ValidationResults results = new ValidationResults();
+			List<SteamRecommendation> recoms = SteamComUtils.getRecommendationsAsynch(STEAM_ID, false, 10, results);
 			for(SteamRecommendation recom : recoms) {
 				System.out.println(recom);
 			}

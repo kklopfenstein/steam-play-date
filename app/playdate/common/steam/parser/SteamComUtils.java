@@ -7,10 +7,6 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
 
 import models.PDUser;
 import models.SteamFriend;
@@ -18,48 +14,51 @@ import models.SteamGame;
 import models.SteamRecommendation;
 import models.SteamUser;
 import play.Logger;
+import playdate.common.steam.asynch.SteamAPIExecutorService;
+import playdate.common.steam.asynch.SteamWorker;
 import playdate.common.steam.parser.exception.SteamParserException;
+import playdate.common.steam.parser.validation.ValidationResults;
 
 public class SteamComUtils {
 	
-	private static int TRIES = 50;
+	private static int TRIES = 5;
 	
-	public static List<SteamGame> getSteamGames(String steamId, Boolean profile) 
+	public static List<SteamGame> getSteamGames(String steamId, Boolean profile, ValidationResults results) 
 			throws SteamParserException {
 		List<SteamGame> result = null;
 		SteamUserGameParser parser = new SteamUserGameParser(steamId, profile);
 		try {
-			result = parser.parseGameLibrary(TRIES);
+			result = parser.parseGameLibrary(TRIES, results);
 		} catch (Exception e) {
 			throw new SteamParserException(e);
 		}
 		return result;
 	}
 	
-	public static List<SteamGame> getSteamGamesForUser(String user, Boolean profile) 
+	public static List<SteamGame> getSteamGamesForUser(String user, Boolean profile, ValidationResults results) 
 		throws SteamParserException {
 		PDUser pdUser = PDUser.getUser(user);
-		return getSteamGames(pdUser.steamId, profile);
+		return getSteamGames(pdUser.steamId, profile, results);
 	}
 	
-	public static List<SteamFriend> getSteamFriends(String steamId, Boolean profile) 
+	public static List<SteamFriend> getSteamFriends(String steamId, Boolean profile, ValidationResults results) 
 			throws SteamParserException {
 		List<SteamFriend> result = null;
 		SteamFriendParser parser = new SteamFriendParser(steamId, profile);
 		try {
-			result = parser.parseSteamFriends(TRIES);
+			result = parser.parseSteamFriends(TRIES, results);
 		} catch (Exception e) {
 			throw new SteamParserException(e);
 		}
 		return result;
 	}
 	
-	public static LinkedList<SteamFriend> getSteamFriendsLinked(String steamId, Boolean profile) 
+	public static LinkedList<SteamFriend> getSteamFriendsLinked(String steamId, Boolean profile, ValidationResults results) 
 			throws SteamParserException {
 		LinkedList<SteamFriend> result = new LinkedList<SteamFriend>();
 		SteamFriendParser parser = new SteamFriendParser(steamId, profile);
 		try {
-			ArrayList<SteamFriend> r = parser.parseSteamFriends(TRIES);
+			ArrayList<SteamFriend> r = parser.parseSteamFriends(TRIES, results);
 			for(SteamFriend f : r) {
 				result.add(f);
 			}
@@ -69,57 +68,57 @@ public class SteamComUtils {
 		return result;
 	}
 	
-	public static SteamUser getSteamUser(String steamId, Boolean profile) 
+	public static SteamUser getSteamUser(String steamId, Boolean profile, ValidationResults results) 
 			throws SteamParserException {
 		SteamUser result = null;
 		SteamUserParser parser = new SteamUserParser(steamId, profile);
 		try {
-			result = parser.parseSteamFriends(TRIES);
+			result = parser.parseSteamFriends(TRIES, results);
 		} catch (Exception e) {
 			throw new SteamParserException(e);
 		}
 		return result;
 	}
 	
-	public static List<SteamFriend> getSteamFriendsForUser(String user, Boolean profile) 
+	public static List<SteamFriend> getSteamFriendsForUser(String user, Boolean profile, ValidationResults results) 
 		throws SteamParserException {
 		PDUser pdUser = PDUser.getUser(user);
-		return getSteamFriends(pdUser.steamId, profile);
+		return getSteamFriends(pdUser.steamId, profile, results);
 	}
 	
-	public static List<SteamUser> getSteamUsersForUser(String user, Boolean profile) 
+	public static List<SteamUser> getSteamUsersForUser(String user, Boolean profile, ValidationResults results) 
 			throws SteamParserException {
-		List<SteamFriend> friends = getSteamFriendsForUser(user, profile);
+		List<SteamFriend> friends = getSteamFriendsForUser(user, profile, results);
 		List<SteamUser> users = new ArrayList<SteamUser>();
 		for(SteamFriend friend : friends) {
-			SteamUser u = getSteamUser(friend.friendSteamId, true);
+			SteamUser u = getSteamUser(friend.friendSteamId, true, results);
 			users.add(u);
 		}
 		return users;
 	}
 	
-	public static List<SteamRecommendation> getRecommendationsForUser(String user, Boolean profile, int records) 
+	public static List<SteamRecommendation> getRecommendationsForUser(String user, Boolean profile, int records, ValidationResults results) 
 		throws SteamParserException {
 		PDUser pdUser = PDUser.getUser(user);
-		return getRecommendations(pdUser.steamId, profile, records);
+		return getRecommendations(pdUser.steamId, profile, records, results);
 	}
 	
-	public static List<SteamRecommendation> getRecommendations(String user, Boolean profile, int records) 
+	public static List<SteamRecommendation> getRecommendations(String user, Boolean profile, int records, ValidationResults results) 
 			throws SteamParserException {
 		List<SteamRecommendation> result = null;
 		
-		List<SteamGame> userGames = getSteamGames(user, profile);
-		List<SteamFriend> userFriends = getSteamFriends(user, profile);
+		List<SteamGame> userGames = getSteamGames(user, profile, results);
+		List<SteamFriend> userFriends = getSteamFriends(user, profile, results);
 		List<SteamUser> userUsers = new ArrayList<SteamUser>();
 		
 		for(SteamFriend friend : userFriends) {
-			userUsers.add(getSteamUser(friend.friendSteamId, true));
+			userUsers.add(getSteamUser(friend.friendSteamId, true, results));
 		}
 		
 		HashMap<String,SteamRecommendation> gameCount = fillGameCountMap(userGames);
 		
 		for(SteamUser friend : userUsers) {
-			List<SteamGame> friendGames = getSteamGames(friend.steamId64, true);
+			List<SteamGame> friendGames = getSteamGames(friend.steamId64, true, results);
 			updateGameMap(gameCount, friendGames, friend);
 		}
 		
@@ -169,113 +168,108 @@ public class SteamComUtils {
 	    return true;  
 	}
 	
-	public static List<SteamRecommendation> getRecommendationsAsynch(String user, Boolean profile, int records) 
+	/**
+	 * Determine if any thread is running
+	 * @param jobs
+	 * @return
+	 */
+	private static boolean jobsOpen(ArrayList<SteamWorker> jobs) 
+		throws SteamParserException {
+		boolean result = false;
+		try {
+			for(SteamWorker job : jobs) {
+				job.isFinished();
+			}
+		} catch(InterruptedException e) {
+			throw new SteamParserException(e);
+		}
+		return result;
+	}
+	
+	public static List<SteamRecommendation> getRecommendationsAsynch(String user, Boolean profile, int records,
+			final ValidationResults results) 
 			throws SteamParserException {
 		List<SteamRecommendation> result = null;
+		long startTime = System.currentTimeMillis();
+		ArrayList<SteamWorker> userJobs = new ArrayList<SteamWorker>();
+		ArrayList<SteamWorker> friendJobs = new ArrayList<SteamWorker>();
 		try {
-			List<SteamGame> userGames = getSteamGames(user, profile);
-			LinkedList<SteamFriend> userFriends = getSteamFriendsLinked(user, profile);
+			List<SteamGame> userGames = getSteamGames(user, profile, results);
+			LinkedList<SteamFriend> userFriends = getSteamFriendsLinked(user, profile, results);
 			final LinkedList<SteamUser> userUsers = new LinkedList<SteamUser>();
 			
-			int maxThreads = 15;
-			ExecutorService executorService =
-					new ThreadPoolExecutor(
-						maxThreads, // core thread pool size
-						maxThreads, // maximum thread pool size
-						1, // time to wait before resizing the pool
-						TimeUnit.MINUTES,
-						new ArrayBlockingQueue<Runnable>(maxThreads, true),
-						new ThreadPoolExecutor.CallerRunsPolicy());
-	
 			while(!userFriends.isEmpty()) {
 				final SteamFriend fr = userFriends.pop();
-				executorService.submit(new Runnable() {
+				SteamWorker uR = new SteamWorker() {
 					@Override
-					public void run() {
+					public void personalizedRun() {
 						try {
 							Logger.info("%--- getSteamUser worker thread started ---%");
-							SteamUser user = getSteamUser(fr.friendSteamId, true);
+							SteamUser user = getSteamUser(fr.friendSteamId, true, results);
 							userUsers.add(user);
-							Logger.info("%--- getSteamUser worker thread added " + user + " users is now of size " + userUsers.size() + "---%");
+							Logger.info("%--- getSteamUser worker thread add" +
+									"ed " + user + " users is now of size " + 
+									userUsers.size() + "---%");
 							Logger.info("%--- getSteamUser worker thread ended ---%");
 						} catch(Exception e) {
 							e.printStackTrace();
 						}
 					}
-				});
+				};
+				userJobs.add(uR);
+				SteamAPIExecutorService.getInstance().submit(uR);
 			}
 	
-			Logger.info("%--- Starting shutdown on executor service ---%");
-			executorService.shutdown();
-			Logger.info("%--- Shutdown on executor service terminated ---%");
-			
-			try {
-				Logger.info("%--- Awaiting termination for 60 seconds --%");
-				if(!executorService.awaitTermination(60, TimeUnit.SECONDS)) {
-					Logger.info("%--- Shutdown now on Executor --%");
-					executorService.shutdownNow();
-				}
-				
-				Logger.info("%--- Awaiting termination for second 60 seconds --%");
-				if(!executorService.awaitTermination(60, TimeUnit.SECONDS)) {
-					Logger.info("%--- Not shutdown! ---%");
-				}
-			} catch(InterruptedException ex) {
-				Logger.info("%--- InterruptedException waiting for executorService --%");
-				executorService.shutdownNow();
-				Thread.currentThread().interrupt();
+			// TODO: add this stuff to configuration
+			int tries = 0;
+			final int triesMax = 10*6000; 
+			// see if job is finished until max number of tries
+			while((jobsOpen(userJobs)) && (tries < triesMax)) {
+				//Logger.info("%--- User job not done, sleeping for .5 seconds ---%");
+				Thread.sleep(100);
+				tries++;
+			}
+			if(tries == triesMax) {
+				Logger.info("%--- User job not done, exiting... ---%");
+				throw new SteamParserException("Friend job could not finish in allotted time.");
 			}
 			
 			Logger.info("%--- Ended building users, user count is " + userUsers.size() + " ---%");
 			
-			executorService =
-					new ThreadPoolExecutor(
-						maxThreads, // core thread pool size
-						maxThreads, // maximum thread pool size
-						1, // time to wait before resizing the pool
-						TimeUnit.MINUTES,
-						new ArrayBlockingQueue<Runnable>(maxThreads, true),
-						new ThreadPoolExecutor.CallerRunsPolicy());
-			
 			final HashMap<String,SteamRecommendation> gameCount = fillGameCountMap(userGames);
-			
+			final List<SteamUser> completedFriends = new ArrayList<SteamUser>();
 			while(!userUsers.isEmpty()) {
 				Logger.info("%--- Building first worker thread. Users size is " + userUsers.size() + " ---%");
 				final SteamUser friend = userUsers.pop();
-				executorService.submit(new Runnable() {
+				SteamWorker r = new SteamWorker() {
 					@Override
-					public void run() {
+					public void personalizedRun() {
 						try {
 							Logger.info("%--- getSteamGames worker thread started ---%");
-							List<SteamGame> friendGames = getSteamGames(friend.steamId64, true);
+							List<SteamGame> friendGames = getSteamGames(friend.steamId64, true, results);
 							updateGameMap(gameCount, friendGames, friend);
+							completedFriends.add(friend);
 							Logger.info("%--- getSteamGames worker thread ended ---%");
 						} catch(Exception e) {
 							e.printStackTrace();
 						}
 					}
-				});
+				};
+				friendJobs.add(r);
+				SteamAPIExecutorService.getInstance().submit(r);
 			}
 	
-			Logger.info("%--- Starting wait on executor service ---%");
-			executorService.shutdown();
-			Logger.info("%--- Wait on executor service terminated ---%");
-			
-			try {
-				Logger.info("%--- Awaiting termination for 60 seconds --%");
-				if(!executorService.awaitTermination(60, TimeUnit.SECONDS)) {
-					Logger.info("%--- Shutdown now on Executor --%");
-					executorService.shutdownNow();
-				}
-				
-				Logger.info("%--- Awaiting termination for second 60 seconds --%");
-				if(!executorService.awaitTermination(60, TimeUnit.SECONDS)) {
-					Logger.info("%--- Not shutdown! ---%");
-				}
-			} catch(InterruptedException ex) {
-				Logger.info("%--- InterruptedException waiting for executorService --%");
-				executorService.shutdownNow();
-				Thread.currentThread().interrupt();
+			// TODO: add this stuff to configuration
+			// see if job is finished until max number of tries
+			tries = 0;
+			while((jobsOpen(friendJobs)) && (tries < triesMax)) {
+				//Logger.info("%--- Friend job not done, sleeping for .5 seconds ---%");
+				Thread.sleep(100);
+				tries++;
+			}
+			if(tries == triesMax) {
+				Logger.info("%--- Friend job not done, exiting... ---%");
+				throw new SteamParserException("Friend job could not finish in allotted time.");
 			}
 			
 			Collection<SteamRecommendation> games = gameCount.values();
@@ -290,8 +284,17 @@ public class SteamComUtils {
 			}
 		} catch(Exception e) {
 			throw new SteamParserException(e);
+		} finally {
+			for(Thread runningThread : userJobs) {
+				runningThread.interrupt();
+			}
+			for(Thread runningThread : friendJobs) {
+				runningThread.interrupt();
+			}
 		}
-		
+		long stopTime = System.currentTimeMillis();
+		Logger.info("%--- Execution was " + (startTime - stopTime) + " ---%");
+		results.addMessage((stopTime-startTime)/1000 + " seconds.");
 		return result;
 	}
 	

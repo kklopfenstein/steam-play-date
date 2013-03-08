@@ -3,7 +3,7 @@ $("#recomForm").submit(function (event) {
 	var posting = $.post('/getRecommendations', $('#recomForm').serialize());
 	$('#myModal').modal({backdrop: 'static', show: true});
 	$('.carousel').carousel({
-        interval: 2000
+        interval: 10000
         })
 	posting.done(function(data) { 
 		$('#mainContainer').empty().append(data);

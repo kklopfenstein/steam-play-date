@@ -14,6 +14,7 @@ import org.xml.sax.helpers.XMLReaderFactory;
 
 import play.Logger;
 import playdate.common.steam.parser.exception.SteamParserException;
+import playdate.common.steam.parser.validation.ValidationResults;
 import playdate.common.util.Constants;
 
 public class SteamFriendParser extends SteamComXMLParser {
@@ -28,7 +29,7 @@ public class SteamFriendParser extends SteamComXMLParser {
 		super(steamId, profile);
 	}
 	
-	public ArrayList<SteamFriend> parseSteamFriends(int triesMax) throws SteamParserException {
+	public ArrayList<SteamFriend> parseSteamFriends(int triesMax, ValidationResults results) throws SteamParserException {
 		StringBuffer steamURL = new StringBuffer();
 		if(profile) {
 			steamURL.append(Constants.STEAM_PROFILE_COM_URL);
@@ -82,6 +83,7 @@ public class SteamFriendParser extends SteamComXMLParser {
 		}
 		
 		if(!successfull) {
+			results.addMessage("Could not parse friends for " + steamId);
 			throw new SteamParserException("Exception after " + tries + " tries.");
 		}
 		

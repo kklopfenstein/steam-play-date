@@ -1,6 +1,11 @@
-@(user: String)(recoms: List[SteamRecommendation])
+@(user: String)(message: List[String])(recoms: List[SteamRecommendation])
 
 	<h1>What you should play</h1>
+	@if(message != null) {
+		@for(msg <- message) {
+			<h3>@msg</h3>
+		}
+	}
 	@if(recoms != null) {
 		<table class="table table-striped">
 			<tr>
